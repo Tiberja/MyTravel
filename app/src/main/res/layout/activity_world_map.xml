@@ -3,51 +3,49 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
-    android:layout_width="0dp"
-    android:layout_height="0dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFEFE"
     tools:context=".WorldMapActivity">
 
     <View
-        android:id="@+id/view"
-        android:layout_width="wrap_content"
-        android:layout_height="70dp"
+        android:id="@+id/view3"
+        android:layout_width="0dp"
+        android:layout_height="128dp"
         android:background="#ADD1EF"
-        tools:layout_editor_absoluteX="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         tools:layout_editor_absoluteY="0dp" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="20dp"
         android:text="Besuchte Länder: 0"
-        android:textSize="20dp"
-        android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/view"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textColor="#000000"
+        android:textSize="48sp"
+        app:layout_constraintBottom_toBottomOf="@+id/view3"
+        app:layout_constraintStart_toStartOf="@+id/view3"
+        app:layout_constraintTop_toTopOf="@+id/view3" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="47dp"
-        android:layout_height="41dp"
-        android:layout_margin="16dp"
-        android:contentDescription="Navigation"
-        app:layout_constraintBottom_toBottomOf="@+id/view"
-        app:layout_constraintEnd_toEndOf="@+id/view"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/Navigation" />
-
-    <ImageView
-        android:id="@+id/imageView8"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:adjustViewBounds="true"
-        android:scaleType="fitCenter"
         app:srcCompat="@drawable/world"
-        tools:layout_editor_absoluteX="-16dp"
-        tools:layout_editor_absoluteY="70dp" />
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="245dp" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintBottom_toBottomOf="@+id/view3"
+        app:layout_constraintEnd_toEndOf="@+id/view3"
+        app:layout_constraintTop_toTopOf="@+id/view3"
+        app:srcCompat="@drawable/Navigation" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
