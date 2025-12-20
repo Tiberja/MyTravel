@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/18.6 Safari/605.1.15" version="29.2.4">
   <diagram name="Seite-1" id="z3ZHOGt22r9WQCFW1MvZ">
-    <mxGraphModel dx="3636" dy="2244" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3300" pageHeight="2339" background="none" math="0" shadow="0">
+    <mxGraphModel dx="3432" dy="2116" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="3300" pageHeight="2339" background="none" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -314,21 +314,21 @@
           <mxGeometry height="119" width="138.5" x="685.0999999999999" y="1586.5" as="geometry" />
         </mxCell>
         <mxCell id="wpHNqPSMoJ29SA0yvL1G-88" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;Weltkarte-Screen&lt;/font&gt;" vertex="1">
-          <mxGeometry height="43" width="189" x="2535" y="936.5" as="geometry" />
+          <mxGeometry height="43" width="189" x="2535" y="897" as="geometry" />
         </mxCell>
         <mxCell id="wpHNqPSMoJ29SA0yvL1G-89" edge="1" parent="1" source="wpHNqPSMoJ29SA0yvL1G-201" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;">
           <mxGeometry relative="1" as="geometry">
             <mxPoint x="754" y="1588.5" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="wpHNqPSMoJ29SA0yvL1G-90" edge="1" parent="1" source="wpHNqPSMoJ29SA0yvL1G-92" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="wpHNqPSMoJ29SA0yvL1G-104">
+        <mxCell id="wpHNqPSMoJ29SA0yvL1G-90" edge="1" parent="1" source="wpHNqPSMoJ29SA0yvL1G-92" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" target="wRILyygv13vfeosRYIYC-1">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="wpHNqPSMoJ29SA0yvL1G-91" edge="1" parent="1" source="wpHNqPSMoJ29SA0yvL1G-93" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" target="wpHNqPSMoJ29SA0yvL1G-78">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="wpHNqPSMoJ29SA0yvL1G-92" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;span style=&quot;font-size: 15px;&quot;&gt;Weltkarte laden&amp;nbsp;&lt;/span&gt;" vertex="1">
-          <mxGeometry height="43" width="189" x="2535" y="1039" as="geometry" />
+          <mxGeometry height="43" width="189" x="2535" y="983" as="geometry" />
         </mxCell>
         <mxCell id="wpHNqPSMoJ29SA0yvL1G-93" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;Fehlermeldung anzeigen&lt;/font&gt;" vertex="1">
           <mxGeometry height="56.5" width="153" x="852" y="1551.25" as="geometry" />
@@ -337,7 +337,7 @@
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
         <mxCell id="wpHNqPSMoJ29SA0yvL1G-95" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;span style=&quot;font-size: 15px;&quot;&gt;Markiere diese Länder auf der Karte&lt;/span&gt;" vertex="1">
-          <mxGeometry height="52" width="189" x="2535" y="1261" as="geometry" />
+          <mxGeometry height="52" width="189" x="2535" y="1287" as="geometry" />
         </mxCell>
         <mxCell id="wpHNqPSMoJ29SA0yvL1G-96" parent="1" style="text;html=1;whiteSpace=wrap;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;rounded=0;" value="&lt;font style=&quot;font-size: 25px;&quot;&gt;&lt;b&gt;Home&lt;/b&gt;&lt;/font&gt;" vertex="1">
           <mxGeometry height="30" width="60" x="1244.8700000000001" y="862" as="geometry" />
@@ -369,7 +369,7 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="wpHNqPSMoJ29SA0yvL1G-104" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;span style=&quot;font-size: 15px;&quot;&gt;Liste besuchter Länder aus DB laden&lt;/span&gt;" vertex="1">
-          <mxGeometry height="57" width="189" x="2535" y="1146" as="geometry" />
+          <mxGeometry height="57" width="189" x="2535" y="1176" as="geometry" />
         </mxCell>
         <mxCell id="wpHNqPSMoJ29SA0yvL1G-105" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fad9d5;strokeColor=#ae4132;" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;HOME&lt;/font&gt;" vertex="1">
           <mxGeometry height="59.75" width="129" x="1094.5" y="715.75" as="geometry" />
@@ -380,8 +380,8 @@
         <mxCell id="wpHNqPSMoJ29SA0yvL1G-107" edge="1" parent="1" source="wpHNqPSMoJ29SA0yvL1G-108" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" target="wpHNqPSMoJ29SA0yvL1G-115">
           <mxGeometry relative="1" as="geometry" />
         </mxCell>
-        <mxCell id="wpHNqPSMoJ29SA0yvL1G-108" parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#FF99CC;fillColor=#FF99CC;" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;Land auf Karte antippen&lt;/font&gt;" vertex="1">
-          <mxGeometry height="54" width="181" x="2857.5" y="1393" as="geometry" />
+        <mxCell id="wpHNqPSMoJ29SA0yvL1G-108" parent="1" style="rounded=1;whiteSpace=wrap;html=1;strokeColor=#FF99CC;fillColor=#FF99CC;" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;Land auf Liste antippen&lt;/font&gt;" vertex="1">
+          <mxGeometry height="54" width="181" x="2857.5" y="1392" as="geometry" />
         </mxCell>
         <mxCell id="wpHNqPSMoJ29SA0yvL1G-109" parent="1" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fad9d5;strokeColor=#ae4132;" value="&lt;font style=&quot;font-size: 15px;&quot;&gt;KALENDER&lt;/font&gt;" vertex="1">
           <mxGeometry height="60" width="120" x="1373.5" y="715.5" as="geometry" />
@@ -822,6 +822,12 @@
             <mxPoint x="2306" y="1447" as="sourcePoint" />
             <mxPoint x="1098" y="1001" as="targetPoint" />
           </mxGeometry>
+        </mxCell>
+        <mxCell id="wRILyygv13vfeosRYIYC-2" edge="1" parent="1" source="wRILyygv13vfeosRYIYC-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" target="wpHNqPSMoJ29SA0yvL1G-104">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="wRILyygv13vfeosRYIYC-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;" value="&lt;span style=&quot;font-size: 15px;&quot;&gt;Liste der Länder laden&lt;/span&gt;" vertex="1">
+          <mxGeometry height="43" width="189" x="2535" y="1080" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
