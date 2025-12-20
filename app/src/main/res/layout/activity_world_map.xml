@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         app:srcCompat="@drawable/world"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="245dp" />
+        tools:layout_editor_absoluteY="182dp" />
 
     <ImageView
         android:id="@+id/imageView4"
