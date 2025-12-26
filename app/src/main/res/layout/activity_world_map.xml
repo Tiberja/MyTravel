@@ -14,8 +14,7 @@
         android:layout_height="128dp"
         android:background="#ADD1EF"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="0dp" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView"
@@ -24,28 +23,45 @@
         android:layout_marginStart="20dp"
         android:text="Besuchte Länder: 0"
         android:textColor="#000000"
-        android:textSize="48sp"
+        android:textSize="40sp"
         app:layout_constraintBottom_toBottomOf="@+id/view3"
         app:layout_constraintStart_toStartOf="@+id/view3"
         app:layout_constraintTop_toTopOf="@+id/view3" />
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@drawable/world"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="182dp" />
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="fitCenter"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view3"
+        app:layout_constraintBottom_toTopOf="@+id/countryList"
+        app:srcCompat="@drawable/world" />
 
     <ImageView
         android:id="@+id/imageView4"
         android:layout_width="85dp"
         android:layout_height="85dp"
         android:layout_marginEnd="20dp"
+        android:clickable="true"
+        android:focusableInTouchMode="true"
+        android:foreground="?android:attr/selectableItemBackgroundBorderless"
         app:layout_constraintBottom_toBottomOf="@+id/view3"
         app:layout_constraintEnd_toEndOf="@+id/view3"
         app:layout_constraintTop_toTopOf="@+id/view3"
         app:srcCompat="@drawable/Navigation" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/countryList"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:padding="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imageView"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
