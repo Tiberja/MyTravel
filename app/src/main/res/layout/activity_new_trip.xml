@@ -7,4 +7,147 @@
     android:layout_height="match_parent"
     tools:context=".NewTripActivity">
 
+    <View
+        android:id="@+id/view3"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
+        android:background="#ADD1EF"
+        android:elevation="20dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <TextView
+        android:id="@+id/reiseHinzufügen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Reise hinzufügen"
+        android:textColor="#000000"
+        android:textSize="30dp"
+        android:textStyle="bold"
+        android:elevation="21dp"
+        app:layout_constraintEnd_toEndOf="@+id/view3"
+        app:layout_constraintStart_toStartOf="@+id/view3"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="48dp"
+        android:layout_height="56dp"
+        android:layout_marginEnd="20dp"
+        android:clickable="true"
+        android:elevation="21dp"
+        app:layout_constraintBottom_toBottomOf="@+id/view3"
+        app:layout_constraintEnd_toEndOf="@+id/view3"
+        app:layout_constraintTop_toTopOf="@+id/view3"
+        app:srcCompat="@drawable/Navigation" />
+
+    <EditText
+        android:id="@+id/destination"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginEnd="30dp"
+        android:background="#F0F0F0"
+        android:elevation="20dp"
+        android:ems="10"
+        android:hint="Reiseziel"
+        android:inputType="text"
+        android:padding="12dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view3" />
+
+    <EditText
+        android:id="@+id/date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="30dp"
+        android:background="#F0F0F0"
+        android:clickable="true"
+        android:elevation="20dp"
+        android:padding="12dp"
+        android:ems="10"
+        android:focusable="false"
+        android:hint="Zeitraum"
+        android:inputType="date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/destination" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/bildHochladen"
+        android:layout_width="0dp"
+        android:layout_height="300dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="30dp"
+        app:cardBackgroundColor="#F0F0F0"
+        app:cardElevation="10dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/date" >
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="162dp"
+            android:layout_height="166dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="10dp"
+            app:srcCompat="@android:drawable/ic_menu_gallery" />
+
+        <TextView
+            android:id="@+id/UploadText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|center"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="50dp"
+            android:text="Bild hochladen"
+            android:textSize="20dp" />
+    </androidx.cardview.widget.CardView>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5" />
+
+    <Button
+        android:id="@+id/btnAbbrechen"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginEnd="14dp"
+        android:background="#ADD1EF"
+        android:text="Abbrechen"
+        android:layout_marginTop="40dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/guideline"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bildHochladen"
+        app:layout_constraintVertical_bias="0.29" />
+
+    <Button
+        android:id="@+id/btnFertig"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="14dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="30dp"
+        android:background="#ADD1EF"
+        android:text="Fertig"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/guideline"
+        app:layout_constraintTop_toBottomOf="@+id/bildHochladen"
+        app:layout_constraintVertical_bias="0.29" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
