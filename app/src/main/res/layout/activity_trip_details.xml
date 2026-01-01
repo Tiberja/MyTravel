@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -12,10 +11,10 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:fillViewport="true"
-        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent">
+        app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -53,13 +52,13 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="LONDON"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
                     android:textColor="@android:color/black"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"/>
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
@@ -73,21 +72,55 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="✅ PACKLIST"
-                    android:textStyle="bold"
+                    android:textColor="@android:color/black"
                     android:textSize="18sp"
-                    android:textColor="@android:color/black"/>
+                    android:textStyle="bold" />
 
-                <TextView
+
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="• Sonnenbrille\n• Handtuch\n• Zahnbürste\n• Kleider\n• Kopfhörer\n• Schuhe\n• Schmuck\n• Mizellenwasser"
-                    android:textSize="16sp"
-                    android:textColor="@android:color/black"/>
+                    android:orientation="vertical">
 
+                    <CheckBox
+                        android:id="@+id/checkBox4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Sonnenbrille" />
+
+                    <CheckBox
+                        android:id="@+id/checkBox5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Handtuch" />
+
+                    <CheckBox
+                        android:id="@+id/checkBox7"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Zahnbürste" />
+
+                    <CheckBox
+                        android:id="@+id/checkBox3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Schmuck" />
+
+                    <CheckBox
+                        android:id="@+id/checkBox6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Kleider" />
+
+                    <CheckBox
+                        android:id="@+id/checkBox8"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Kopfhörer" />
+                </LinearLayout>
 
                 <View
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="20dp" />
 
 
@@ -95,17 +128,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="🎯 ACTIVITIES"
-                    android:textStyle="bold"
+                    android:textColor="@android:color/black"
                     android:textSize="18sp"
-                    android:textColor="@android:color/black"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="Outdoor:\n• Oxford Street\n• Big Ben\n• London Eye\n• Tower Bridge\n\nIndoor:\n• Madame Tussauds\n• Musical\n• National Galerie"
-                    android:textSize="16sp"
-                    android:textColor="@android:color/black"/>
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
 
 
                 <View
@@ -117,17 +150,17 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="🍴 FOODSPOTS"
-                    android:textStyle="bold"
+                    android:textColor="@android:color/black"
                     android:textSize="18sp"
-                    android:textColor="@android:color/black"/>
+                    android:textStyle="bold" />
 
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:text="Breakfast:\n• \n• \n\nDinner:\n• \n• "
-                    android:textSize="16sp"
-                    android:textColor="@android:color/black"/>
+                    android:textColor="@android:color/black"
+                    android:textSize="16sp" />
 
 
                 <View
