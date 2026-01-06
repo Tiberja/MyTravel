@@ -7,12 +7,12 @@
 
     <View
         android:id="@+id/header"
-        android:layout_width="0dp"
-        android:layout_height="160dp"
+        android:layout_width="wrap_content"
+        android:layout_height="70dp"
         android:background="#ADD1EF"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        android:elevation="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -20,6 +20,7 @@
         android:text="MyTravel"
         android:textSize="28sp"
         android:textStyle="bold"
+        android:elevation="21dp"
         android:textColor="@android:color/black"
         app:layout_constraintTop_toTopOf="@id/header"
         app:layout_constraintBottom_toBottomOf="@id/header"
@@ -29,53 +30,56 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginStart="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginTop="50dp"
+        android:background="@drawable/bg_day_cell"
+        android:baselineAligned="false"
         android:orientation="vertical"
         android:padding="24dp"
-        android:background="@drawable/bg_day_cell"
-        app:layout_constraintTop_toBottomOf="@id/header"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        android:layout_margin="24dp">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/header">
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Name"/>
+            android:hint="Name" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:hint="E-Mail"
-            android:inputType="textEmailAddress"
-            android:layout_marginTop="12dp"/>
+            android:inputType="textEmailAddress" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:hint="Passwort"
-            android:inputType="textPassword"
-            android:layout_marginTop="12dp"/>
+            android:inputType="textPassword" />
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
             android:hint="Passwort wiederholen"
-            android:inputType="textPassword"
-            android:layout_marginTop="12dp"/>
+            android:inputType="textPassword" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="48dp"
-            android:text="Registrieren"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="20dp"
+            android:text="Registrieren" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Schon ein Konto? Anmelden"
-            android:textColor="@android:color/black"
             android:layout_gravity="center"
-            android:layout_marginTop="16dp"/>
+            android:layout_marginTop="16dp"
+            android:text="Schon ein Konto? Anmelden"
+            android:textColor="@android:color/black" />
 
     </LinearLayout>
 

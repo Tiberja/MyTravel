@@ -9,8 +9,9 @@
         android:layout_height="match_parent"
         android:layout_gravity="end"
         android:layout_marginStart="350dp"
-        android:layout_marginTop="70dp"
-        android:background="#E2DEDE" >
+        android:layout_marginTop="128dp"
+        android:background="@drawable/navigation_background"
+        android:elevation="20dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -29,7 +30,7 @@
                     android:layout_height="77dp"
                     android:layout_marginTop="70dp"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/home" />
+                    app:srcCompat="@drawable/home_icon" />
 
                 <TextView
                     android:id="@+id/textView4"
@@ -38,7 +39,7 @@
                     android:layout_marginTop="70dp"
                     android:layout_weight="1"
                     android:text="Home"
-                    android:textSize="60dp" />
+                    android:textSize="50dp" />
 
             </LinearLayout>
 
@@ -49,11 +50,11 @@
 
                 <ImageView
                     android:id="@+id/imageView9"
-                    android:layout_width="116dp"
-                    android:layout_height="100dp"
+                    android:layout_width="126dp"
+                    android:layout_height="86dp"
                     android:layout_marginTop="60dp"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/addTrip" />
+                    app:srcCompat="@drawable/addtrip_icon" />
 
                 <TextView
                     android:id="@+id/textView6"
@@ -62,7 +63,7 @@
                     android:layout_marginTop="45dp"
                     android:layout_weight="1"
                     android:text="Reise hinzufügen"
-                    android:textSize="60dp" />
+                    android:textSize="50dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -72,11 +73,11 @@
 
                 <ImageView
                     android:id="@+id/imageView10"
-                    android:layout_width="83dp"
+                    android:layout_width="22dp"
                     android:layout_height="82dp"
                     android:layout_marginTop="60dp"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/Kalender" />
+                    app:srcCompat="@drawable/calendar_icon" />
 
                 <TextView
                     android:id="@+id/textView7"
@@ -85,7 +86,7 @@
                     android:layout_marginTop="60dp"
                     android:layout_weight="1"
                     android:text="Kalender"
-                    android:textSize="60dp" />
+                    android:textSize="50dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -95,11 +96,11 @@
 
                 <ImageView
                     android:id="@+id/imageView11"
-                    android:layout_width="79dp"
+                    android:layout_width="34dp"
                     android:layout_height="73dp"
                     android:layout_marginTop="60dp"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/WeltkarteIcon" />
+                    app:srcCompat="@drawable/world_icon" />
 
                 <TextView
                     android:id="@+id/textView8"
@@ -108,7 +109,7 @@
                     android:layout_marginTop="60dp"
                     android:layout_weight="1"
                     android:text="Weltkarte"
-                    android:textSize="60dp" />
+                    android:textSize="50dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -122,7 +123,7 @@
                     android:layout_height="96dp"
                     android:layout_marginTop="60dp"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/Einstellungen" />
+                    app:srcCompat="@drawable/settings_icon" />
 
                 <TextView
                     android:id="@+id/textView9"
@@ -131,7 +132,7 @@
                     android:layout_marginTop="60dp"
                     android:layout_weight="1"
                     android:text="Einstellungen"
-                    android:textSize="55dp" />
+                    android:textSize="50dp" />
             </LinearLayout>
         </LinearLayout>
     </com.google.android.material.navigation.NavigationView>
