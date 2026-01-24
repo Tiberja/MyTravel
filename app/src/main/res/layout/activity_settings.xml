@@ -41,7 +41,7 @@
         app:layout_constraintHorizontal_bias="0.933"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/header"
-        app:srcCompat="@drawable/Navigation" />
+        app:srcCompat="@drawable/navigation" />
 
     <LinearLayout
         android:id="@+id/settingsCard"

@@ -50,7 +50,7 @@
         app:layout_constraintBottom_toBottomOf="@+id/view3"
         app:layout_constraintEnd_toEndOf="@+id/view3"
         app:layout_constraintTop_toTopOf="@+id/view3"
-        app:srcCompat="@drawable/Navigation" />
+        app:srcCompat="@drawable/navigation" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/countryList"

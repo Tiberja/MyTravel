@@ -53,7 +53,7 @@
                     android:layout_height="100dp"
                     android:layout_marginTop="60dp"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/addTrip" />
+                    app:srcCompat="@drawable/add_trip" />
 
                 <TextView
                     android:id="@+id/textView6"
@@ -76,7 +76,7 @@
                     android:layout_height="82dp"
                     android:layout_marginTop="60dp"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/Kalender" />
+                    app:srcCompat="@drawable/kalender" />
 
                 <TextView
                     android:id="@+id/textView7"
@@ -99,7 +99,7 @@
                     android:layout_height="73dp"
                     android:layout_marginTop="60dp"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/WeltkarteIcon" />
+                    app:srcCompat="@drawable/weltkarte_icon" />
 
                 <TextView
                     android:id="@+id/textView8"
@@ -122,7 +122,7 @@
                     android:layout_height="96dp"
                     android:layout_marginTop="60dp"
                     android:layout_weight="1"
-                    app:srcCompat="@drawable/Einstellungen" />
+                    app:srcCompat="@drawable/einstellungen" />
 
                 <TextView
                     android:id="@+id/textView9"
@@ -151,7 +151,7 @@
         android:layout_marginTop="21dp"
         android:layout_marginEnd="21dp"
         android:layout_marginBottom="10dp"
-        app:srcCompat="@drawable/Navigation" />
+        app:srcCompat="@drawable/navigation" />
 
 
 
