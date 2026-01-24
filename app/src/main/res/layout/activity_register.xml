@@ -42,11 +42,13 @@
         app:layout_constraintTop_toBottomOf="@id/header">
 
         <EditText
+            android:id="@+id/etName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Name" />
 
         <EditText
+            android:id="@+id/etEmail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -54,6 +56,7 @@
             android:inputType="textEmailAddress" />
 
         <EditText
+            android:id="@+id/etPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -61,6 +64,7 @@
             android:inputType="textPassword" />
 
         <EditText
+            android:id="@+id/etPasswordRepeat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
@@ -68,12 +72,15 @@
             android:inputType="textPassword" />
 
         <Button
+            android:id="@+id/btnRegister"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginTop="20dp"
+            android:backgroundTint="#4A90E2"
             android:text="Registrieren" />
 
         <TextView
+            android:id="@+id/tvGoLogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"

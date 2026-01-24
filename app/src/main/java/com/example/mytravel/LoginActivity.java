@@ -1,5 +1,7 @@
 package com.example.mytravel;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,9 +27,37 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin = findViewById(R.id.btnLogin);
         tvRegister = findViewById(R.id.tvRegister);
 
-        // Test: Button klickbar machen
+        // Klick auf "Registrieren" -> RegisterActivity öffnen
+        tvRegister.setOnClickListener(v ->
+                startActivity(new Intent(this, RegisterActivity.class))
+        );
+
+        // Echter Login (ohne DB, mit SharedPreferences)
         btnLogin.setOnClickListener(v -> {
-            Toast.makeText(this, "Login Button geklickt", Toast.LENGTH_SHORT).show();
+            String email = etEmail.getText().toString().trim().toLowerCase();
+            String pw = etPassword.getText().toString();
+
+            if (email.isEmpty() || pw.isEmpty()) {
+                Toast.makeText(this, "Bitte E-Mail und Passwort eingeben", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            SharedPreferences users = getSharedPreferences("users", MODE_PRIVATE);
+            String savedPw = users.getString("pw_" + email, null);
+
+            if (savedPw == null) {
+                Toast.makeText(this, "Account existiert nicht. Bitte registrieren.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            if (!pw.equals(savedPw)) {
+                Toast.makeText(this, "Falsches Passwort", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            Toast.makeText(this, "Login erfolgreich!", Toast.LENGTH_SHORT).show();
+            startActivity(new Intent(this, HomeActivity.class));
+            finish();
         });
     }
 }
