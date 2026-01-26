@@ -32,7 +32,7 @@
         app:layout_constraintEnd_toEndOf="parent"/>
 
     <ImageView
-        android:id="@+id/imageView4"
+        android:id="@+id/navigation_btn"
         android:layout_width="48dp"
         android:layout_height="56dp"
         android:clickable="true"

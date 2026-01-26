@@ -137,7 +137,7 @@
     </com.google.android.material.navigation.NavigationView>
 
     <View
-        android:id="@+id/view3"
+        android:id="@+id/balken"
         android:layout_width="wrap_content"
         android:layout_height="128dp"
         android:background="#ADD1EF" />
