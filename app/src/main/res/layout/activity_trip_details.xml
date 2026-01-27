@@ -7,25 +7,23 @@
     tools:context=".TripDetailsActivity">
 
     <ScrollView
-        android:id="@+id/scrollTripDetails"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:fillViewport="true"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toEndOf="parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-
             <ImageView
                 android:id="@+id/imgCity"
                 android:layout_width="match_parent"
-                android:layout_height="171dp"
+                android:layout_height="180dp"
                 android:scaleType="centerCrop"
                 android:src="@drawable/london"
                 tools:ignore="ContentDescription" />
@@ -39,136 +37,143 @@
                     android:id="@+id/btnBack"
                     android:layout_width="36dp"
                     android:layout_height="36dp"
-                    android:layout_marginStart="13dp"
+                    android:layout_marginStart="12dp"
                     android:padding="6dp"
                     android:src="@android:drawable/ic_media_previous"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     tools:ignore="ContentDescription" />
 
                 <TextView
                     android:id="@+id/tvCity"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="LONDON"
-                    android:textColor="@android:color/black"
-                    android:textSize="20sp"
+                    android:text="CITY"
                     android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+                    android:textSize="20sp"
+                    android:textColor="@android:color/black"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintBottom_toBottomOf="parent" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="16dp"
+                android:orientation="vertical">
 
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="✅ PACKLIST"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-
+                <!-- PACKLIST -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical">
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
 
-                    <CheckBox
-                        android:id="@+id/checkBox4"
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:text="Sonnenbrille" />
+                        android:layout_weight="1"
+                        android:text="✅ PACKLIST"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:textColor="@android:color/black"/>
 
-                    <CheckBox
-                        android:id="@+id/checkBox5"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Handtuch" />
-
-                    <CheckBox
-                        android:id="@+id/checkBox7"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Zahnbürste" />
-
-                    <CheckBox
-                        android:id="@+id/checkBox3"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Schmuck" />
-
-                    <CheckBox
-                        android:id="@+id/checkBox6"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Kleider" />
-
-                    <CheckBox
-                        android:id="@+id/checkBox8"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Kopfhörer" />
+                    <ImageView
+                        android:id="@+id/btnAddPack"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:padding="6dp"
+                        android:src="@android:drawable/ic_input_add"
+                        android:tint="@android:color/holo_green_dark"
+                        android:clickable="true"
+                        android:focusable="true"
+                        tools:ignore="ContentDescription" />
                 </LinearLayout>
 
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp" />
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="🎯 ACTIVITIES"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <TextView
+                <LinearLayout
+                    android:id="@+id/packlistContainer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Outdoor:\n• Oxford Street\n• Big Ben\n• London Eye\n• Tower Bridge\n\nIndoor:\n• Madame Tussauds\n• Musical\n• National Galerie"
-                    android:textColor="@android:color/black"
-                    android:textSize="16sp" />
+                    android:orientation="vertical" />
 
+                <View android:layout_width="match_parent" android:layout_height="22dp"/>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="20dp" />
-
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="🍴 FOODSPOTS"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"
-                    android:textStyle="bold" />
-
-                <TextView
+                <!-- ACTIVITIES -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="Breakfast:\n• \n• \n\nDinner:\n• \n• "
-                    android:textColor="@android:color/black"
-                    android:textSize="16sp" />
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
 
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="🎯 ACTIVITIES"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:textColor="@android:color/black"/>
 
-                <View
+                    <ImageView
+                        android:id="@+id/btnAddActivity"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:padding="6dp"
+                        android:src="@android:drawable/ic_input_add"
+                        android:tint="@android:color/holo_green_dark"
+                        android:clickable="true"
+                        android:focusable="true"
+                        tools:ignore="ContentDescription" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/activitiesContainer"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp" />
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+                <View android:layout_width="match_parent" android:layout_height="22dp"/>
+
+                <!-- FOODSPOTS -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="🍴 FOODSPOTS"
+                        android:textStyle="bold"
+                        android:textSize="18sp"
+                        android:textColor="@android:color/black"/>
+
+                    <ImageView
+                        android:id="@+id/btnAddFoodspot"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:padding="6dp"
+                        android:src="@android:drawable/ic_input_add"
+                        android:tint="@android:color/holo_green_dark"
+                        android:clickable="true"
+                        android:focusable="true"
+                        tools:ignore="ContentDescription" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/foodspotsContainer"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical" />
+
+                <View android:layout_width="match_parent" android:layout_height="20dp"/>
 
             </LinearLayout>
-
         </LinearLayout>
     </ScrollView>
 
