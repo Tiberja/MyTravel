@@ -102,4 +102,12 @@
         tools:listitem="@layout/item_day"
         tools:itemCount="42" />
 
+    <include
+        android:id="@+id/nav_include"
+        layout="@layout/navigation_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:elevation="1000dp" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

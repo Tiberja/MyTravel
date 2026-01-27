@@ -66,7 +66,7 @@
 
             <!-- REISE HINZUFÜGEN -->
             <LinearLayout
-                android:id="@+id/menu_addtrip"
+                android:id="@+id/menu_newtrip"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -113,16 +113,16 @@
             </LinearLayout>
 
             <!-- WELTKARTE -->
+
             <LinearLayout
                 android:id="@+id/menu_worldmap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:paddingVertical="18dp"
                 android:clickable="true"
-                android:focusable="true">
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingVertical="18dp">
 
                 <ImageView
                     android:layout_width="32dp"
@@ -138,15 +138,16 @@
             </LinearLayout>
 
             <!-- EINSTELLUNGEN -->
+
             <LinearLayout
                 android:id="@+id/menu_settings"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical"
-                android:paddingVertical="18dp"
                 android:clickable="true"
-                android:focusable="true">
+                android:focusable="true"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingVertical="18dp">
 
                 <ImageView
                     android:layout_width="32dp"
