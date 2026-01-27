@@ -12,6 +12,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.widget.EditText;
+
+import java.util.Arrays;
+import java.util.List;
+
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -27,7 +34,7 @@ public class HomeActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home);
 
-        // ✅ Auth check
+        //  Auth check
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
             Toast.makeText(this, "Nicht eingeloggt", Toast.LENGTH_SHORT).show();
@@ -36,13 +43,41 @@ public class HomeActivity extends AppCompatActivity {
             return;
         }
 
-        // ✅ Klicks auf Reisen (muss in onCreate sein)
+        //  Klicks auf Reisen
         findViewById(R.id.card_reise1).setOnClickListener(v -> openTrip("reise1"));
         findViewById(R.id.card_reise2).setOnClickListener(v -> openTrip("reise2"));
         findViewById(R.id.card_reise3).setOnClickListener(v -> openTrip("reise3"));
         findViewById(R.id.card_reise4).setOnClickListener(v -> openTrip("reise4"));
 
-        // ✅ NAVIGATION
+        EditText search = findViewById(R.id.suchen);
+
+        List<View> tripCards = Arrays.asList(
+                findViewById(R.id.card_reise1),
+                findViewById(R.id.card_reise2),
+                findViewById(R.id.card_reise3),
+                findViewById(R.id.card_reise4)
+        );
+
+        search.addTextChangedListener(new TextWatcher() {
+            @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override public void afterTextChanged(Editable s) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String query = s.toString().trim().toLowerCase();
+
+                for (View card : tripCards) {
+                    String name = String.valueOf(card.getTag()).toLowerCase();
+
+                    boolean match = name.startsWith(query);
+
+                    card.setVisibility(query.isEmpty() || match ? View.VISIBLE : View.GONE);
+                }
+            }
+        });
+
+
+        //  NAVIGATION
         ImageView btn = findViewById(R.id.navigation_btn);
 
         View navRoot = findViewById(R.id.nav_include);
@@ -91,7 +126,7 @@ public class HomeActivity extends AppCompatActivity {
             finish();
         });
 
-        // ✅ FIRESTORE: Reisen zählen
+        // FIRESTORE: Reisen zählen
         FirebaseFirestore db = FirebaseFirestore.getInstance();
         String uid = user.getUid();
 
@@ -108,7 +143,7 @@ public class HomeActivity extends AppCompatActivity {
                     Toast.makeText(this, "Fehler: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 });
 
-        // ✅ INSETS
+        //  INSETS
         View main = findViewById(R.id.main);
         if (main != null) {
             ViewCompat.setOnApplyWindowInsetsListener(main, (v, insets) -> {

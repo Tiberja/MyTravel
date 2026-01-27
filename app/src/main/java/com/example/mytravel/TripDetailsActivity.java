@@ -236,7 +236,7 @@ public class TripDetailsActivity extends AppCompatActivity {
 
         db.collection("benutzer").document(uid)
                 .collection("reisen").document(reiseId)
-                .collection("aktivitäten")
+                .collection("aktivitaeten")
                 .get()
                 .addOnSuccessListener(q -> {
                     if (q.isEmpty()) {
@@ -294,7 +294,7 @@ public class TripDetailsActivity extends AppCompatActivity {
 
         db.collection("benutzer").document(uid)
                 .collection("reisen").document(reiseId)
-                .collection("aktivitäten")
+                .collection("aktivitaeten")
                 .add(m)
                 .addOnSuccessListener(r -> loadActivities())
                 .addOnFailureListener(e -> Toast.makeText(this, "Fehler: " + e.getMessage(), Toast.LENGTH_LONG).show());
