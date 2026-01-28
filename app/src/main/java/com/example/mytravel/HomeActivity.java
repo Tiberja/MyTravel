@@ -1,32 +1,35 @@
 package com.example.mytravel;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
-import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
+import android.widget.EditText;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.widget.EditText;
-
-import java.util.Arrays;
-import java.util.List;
-
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-public class HomeActivity extends AppCompatActivity {
+import java.util.ArrayList;
+import java.util.List;
 
-    private static final String TAG = "HomeActivity";
+public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +37,7 @@ public class HomeActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home);
 
-        //  Auth check
+        // AUTH CHECK
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
             Toast.makeText(this, "Nicht eingeloggt", Toast.LENGTH_SHORT).show();
@@ -43,107 +46,88 @@ public class HomeActivity extends AppCompatActivity {
             return;
         }
 
-        //  Klicks auf Reisen
-        findViewById(R.id.card_reise1).setOnClickListener(v -> openTrip("reise1"));
-        findViewById(R.id.card_reise2).setOnClickListener(v -> openTrip("reise2"));
-        findViewById(R.id.card_reise3).setOnClickListener(v -> openTrip("reise3"));
-        findViewById(R.id.card_reise4).setOnClickListener(v -> openTrip("reise4"));
-
+        LinearLayout tripsContainer = findViewById(R.id.tripsContainer);
         EditText search = findViewById(R.id.suchen);
 
-        List<View> tripCards = Arrays.asList(
-                findViewById(R.id.card_reise1),
-                findViewById(R.id.card_reise2),
-                findViewById(R.id.card_reise3),
-                findViewById(R.id.card_reise4)
-        );
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+        String uid = user.getUid();
 
+        List<DocumentSnapshot> allTrips = new ArrayList<>();
+
+        // FIRESTORE LIVE LOAD
+        db.collection("benutzer")
+                .document(uid)
+                .collection("reisen")
+                .addSnapshotListener((snap, e) -> {
+                    if (e != null || snap == null) {
+                        Toast.makeText(this, "Fehler: " + (e != null ? e.getMessage() : ""), Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
+                    allTrips.clear();
+                    allTrips.addAll(snap.getDocuments());
+
+                    // WICHTIG: aktuellen Suchtext berücksichtigen
+                    renderTrips(tripsContainer, allTrips, search.getText().toString());
+                });
+
+        // SEARCH (NUR ANFANGSBUSCHTABEN)
         search.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override public void afterTextChanged(Editable s) {}
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                String query = s.toString().trim().toLowerCase();
-
-                for (View card : tripCards) {
-                    String name = String.valueOf(card.getTag()).toLowerCase();
-
-                    boolean match = name.startsWith(query);
-
-                    card.setVisibility(query.isEmpty() || match ? View.VISIBLE : View.GONE);
-                }
+                renderTrips(tripsContainer, allTrips, s.toString());
             }
         });
 
-
-        //  NAVIGATION
+        // NAVIGATION
         ImageView btn = findViewById(R.id.navigation_btn);
 
         View navRoot = findViewById(R.id.nav_include);
-        navRoot.setVisibility(View.GONE); // verhindert Klick-Blocker
+        navRoot.setVisibility(View.GONE);
         View backdrop = navRoot.findViewById(R.id.nav_backdrop);
 
-        // Öffnen / Schließen
         btn.setOnClickListener(v -> {
             navRoot.bringToFront();
             navRoot.setVisibility(navRoot.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
         });
 
-        // Klick neben Menü schließt
         backdrop.setOnClickListener(v -> navRoot.setVisibility(View.GONE));
 
-        View menuHome = navRoot.findViewById(R.id.menu_home);
-        View menuCalendar = navRoot.findViewById(R.id.menu_calendar);
-        View menuSettings = navRoot.findViewById(R.id.menu_settings);
-        View menuNewTrip = navRoot.findViewById(R.id.menu_newtrip);
-        View menuWorldMap = navRoot.findViewById(R.id.menu_worldmap);
+        navRoot.findViewById(R.id.menu_home)
+                .setOnClickListener(v -> navRoot.setVisibility(View.GONE));
 
-        // Home nicht neu starten, nur Menü schließen
-        menuHome.setOnClickListener(v -> navRoot.setVisibility(View.GONE));
-
-        menuCalendar.setOnClickListener(v -> {
-            navRoot.setVisibility(View.GONE);
-            startActivity(new Intent(this, CalendarActivity.class));
-            finish();
-        });
-
-        menuSettings.setOnClickListener(v -> {
-            navRoot.setVisibility(View.GONE);
-            startActivity(new Intent(this, SettingsActivity.class));
-            finish();
-        });
-
-        menuNewTrip.setOnClickListener(v -> {
-            navRoot.setVisibility(View.GONE);
-            startActivity(new Intent(this, NewTripActivity.class));
-            finish();
-        });
-
-        menuWorldMap.setOnClickListener(v -> {
-            navRoot.setVisibility(View.GONE);
-            startActivity(new Intent(this, WorldMapActivity.class));
-            finish();
-        });
-
-        // FIRESTORE: Reisen zählen
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String uid = user.getUid();
-
-        db.collection("benutzer")
-                .document(uid)
-                .collection("reisen")
-                .get()
-                .addOnSuccessListener(q -> {
-                    Log.d(TAG, "Reisen gefunden: " + q.size());
-                    Toast.makeText(this, "Du hast " + q.size() + " Reisen gespeichert", Toast.LENGTH_LONG).show();
-                })
-                .addOnFailureListener(e -> {
-                    Log.e(TAG, "Reisen laden fehlgeschlagen", e);
-                    Toast.makeText(this, "Fehler: " + e.getMessage(), Toast.LENGTH_LONG).show();
+        navRoot.findViewById(R.id.menu_calendar)
+                .setOnClickListener(v -> {
+                    navRoot.setVisibility(View.GONE);
+                    startActivity(new Intent(this, CalendarActivity.class));
+                    finish();
                 });
 
-        //  INSETS
+        navRoot.findViewById(R.id.menu_settings)
+                .setOnClickListener(v -> {
+                    navRoot.setVisibility(View.GONE);
+                    startActivity(new Intent(this, SettingsActivity.class));
+                    finish();
+                });
+
+        navRoot.findViewById(R.id.menu_newtrip)
+                .setOnClickListener(v -> {
+                    navRoot.setVisibility(View.GONE);
+                    startActivity(new Intent(this, NewTripActivity.class));
+                    finish();
+                });
+
+        navRoot.findViewById(R.id.menu_worldmap)
+                .setOnClickListener(v -> {
+                    navRoot.setVisibility(View.GONE);
+                    startActivity(new Intent(this, WorldMapActivity.class));
+                    finish();
+                });
+
+        // INSETS
         View main = findViewById(R.id.main);
         if (main != null) {
             ViewCompat.setOnApplyWindowInsetsListener(main, (v, insets) -> {
@@ -154,9 +138,83 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    private void openTrip(String reiseId) {
-        Intent i = new Intent(this, TripDetailsActivity.class);
-        i.putExtra("reiseId", reiseId);
-        startActivity(i);
+    // ===== RENDER REISEN =====
+    private void renderTrips(LinearLayout container, List<DocumentSnapshot> docs, String query) {
+        container.removeAllViews();
+
+        String q = query == null ? "" : query.trim().toLowerCase();
+
+        for (DocumentSnapshot d : docs) {
+            String ort = d.getString("ort");
+            String bild = d.getString("bild");
+            String id = d.getId();
+
+            String ortLower = ort == null ? "" : ort.toLowerCase();
+
+            // NUR ANFANG
+            boolean match = q.isEmpty() || ortLower.startsWith(q);
+            if (!match) continue;
+
+            CardView card = new CardView(this);
+
+            int topMargin = container.getChildCount() == 0 ? dp(20) : dp(30);
+
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT,
+                    dp(150)
+            );
+            lp.setMargins(dp(15), topMargin, dp(15), 0);
+
+            card.setLayoutParams(lp);
+            card.setRadius(dp(20));
+            card.setCardElevation(dp(10));
+            card.setUseCompatPadding(false);
+
+            android.widget.FrameLayout frame = new android.widget.FrameLayout(this);
+
+            ImageView img = new ImageView(this);
+            img.setLayoutParams(new android.widget.FrameLayout.LayoutParams(
+                    android.widget.FrameLayout.LayoutParams.MATCH_PARENT,
+                    android.widget.FrameLayout.LayoutParams.MATCH_PARENT
+            ));
+            img.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+            if (bild != null) {
+                int resId = getResources().getIdentifier(bild, "drawable", getPackageName());
+                if (resId != 0) img.setImageResource(resId);
+            }
+
+            TextView title = new TextView(this);
+            android.widget.FrameLayout.LayoutParams tlp =
+                    new android.widget.FrameLayout.LayoutParams(
+                            android.widget.FrameLayout.LayoutParams.MATCH_PARENT,
+                            android.widget.FrameLayout.LayoutParams.WRAP_CONTENT
+                    );
+            tlp.gravity = Gravity.BOTTOM;
+
+            title.setLayoutParams(tlp);
+            title.setBackgroundColor(Color.parseColor("#ADD1EF"));
+            title.setPadding(dp(6), dp(6), dp(6), dp(6));
+            title.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+            title.setTextSize(20);
+            title.setTypeface(null, Typeface.BOLD);
+            title.setText(ort == null ? "" : ort.toUpperCase());
+
+            frame.addView(img);
+            frame.addView(title);
+            card.addView(frame);
+
+            card.setOnClickListener(v -> {
+                Intent i = new Intent(this, TripDetailsActivity.class);
+                i.putExtra("reiseId", id);
+                startActivity(i);
+            });
+
+            container.addView(card);
+        }
+    }
+
+    private int dp(int v) {
+        return (int) (v * getResources().getDisplayMetrics().density);
     }
 }

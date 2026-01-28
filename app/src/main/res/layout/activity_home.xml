@@ -1,33 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!-- TOP BAR -->
     <View
         android:id="@+id/balken"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="70dp"
         android:background="#ADD1EF"
         android:elevation="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <TextView
         android:id="@+id/deineReisen"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
         android:text="Deine Reisen"
-        android:textColor="#000000"
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:textStyle="bold"
-        android:elevation="21dp"
-        app:layout_constraintEnd_toEndOf="@+id/balken"
-        app:layout_constraintStart_toStartOf="@+id/balken"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:textColor="#000000"
+        android:elevation="51dp"
+        app:layout_constraintTop_toTopOf="@id/balken"
+        app:layout_constraintBottom_toBottomOf="@id/balken"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <ImageView
         android:id="@+id/navigation_btn"
@@ -35,17 +37,17 @@
         android:layout_height="56dp"
         android:layout_marginEnd="20dp"
         android:clickable="true"
-        android:elevation="21dp"
-        app:layout_constraintBottom_toBottomOf="@+id/balken"
-        app:layout_constraintEnd_toEndOf="@+id/balken"
-        app:layout_constraintTop_toTopOf="@+id/balken"
-        app:srcCompat="@drawable/navigation"
         android:focusable="true"
+        android:elevation="50dp"
+        android:translationZ="50dp"
         android:foreground="?attr/selectableItemBackgroundBorderless"
-        android:focusableInTouchMode="true"
-        android:translationZ="100dp"
-        />
+        app:srcCompat="@drawable/navigation"
+        app:layout_constraintTop_toTopOf="@id/balken"
+        app:layout_constraintBottom_toBottomOf="@id/balken"
+        app:layout_constraintEnd_toEndOf="parent" />
 
+
+    <!-- CONTENT -->
     <androidx.core.widget.NestedScrollView
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -67,186 +69,29 @@
                 android:layout_height="40dp"
                 android:layout_marginStart="40dp"
                 android:layout_marginEnd="40dp"
-                android:layout_marginBottom="10dp"
                 android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/search_background"
                 android:hint="suchen..."
                 android:paddingStart="12dp"
                 android:singleLine="true" />
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/card_reise1"
+            <LinearLayout
+                android:id="@+id/tripsContainer"
                 android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:clickable="true"
-                android:focusableInTouchMode="true"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="10dp"
-                app:cardPreventCornerOverlap="false"
-                app:cardUseCompatPadding="false"
-                app:layout_constraintStart_toStartOf="@+id/balken"
-                app:layout_constraintTop_toBottomOf="@+id/suchen"
-                android:tag="Barcelona">
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:animationCache="true">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        app:srcCompat="@drawable/barcelona" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:background="#ADD1EF"
-                        android:padding="5dp"
-                        android:text="BARCELONA"
-                        android:textAlignment="center"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-
-                </FrameLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/card_reise2"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:clickable="true"
-                android:focusableInTouchMode="true"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="10dp"
-                app:layout_constraintTop_toBottomOf="@+id/card_reise1"
-                tools:layout_editor_absoluteX="46dp"
-                android:tag="London">
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        app:srcCompat="@drawable/london" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:background="#ADD1EF"
-                        android:padding="5dp"
-                        android:text="LONDON"
-                        android:textAlignment="center"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-
-                </FrameLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/card_reise3"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:clickable="true"
-                android:focusableInTouchMode="true"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="10dp"
-                app:layout_constraintTop_toBottomOf="@+id/card_reise2"
-                tools:layout_editor_absoluteX="46dp"
-                android:tag="Sevilla">
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        app:srcCompat="@drawable/sevilla" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:background="#ADD1EF"
-                        android:padding="5dp"
-                        android:text="SEVILLA"
-                        android:textAlignment="center"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-
-                </FrameLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/card_reise4"
-                android:layout_width="match_parent"
-                android:layout_height="150dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginTop="30dp"
-                android:layout_marginEnd="15dp"
-                android:clickable="true"
-                android:focusableInTouchMode="true"
-                app:cardCornerRadius="20dp"
-                app:cardElevation="10dp"
-                app:layout_constraintTop_toBottomOf="@+id/card_reise3"
-                tools:layout_editor_absoluteX="46dp"
-                android:tag="Rom">
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:scaleType="centerCrop"
-                        app:srcCompat="@drawable/rom" />
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="bottom"
-                        android:background="#ADD1EF"
-                        android:padding="5dp"
-                        android:text="ROM"
-                        android:textAlignment="center"
-                        android:textSize="20sp"
-                        android:textStyle="bold" />
-
-
-                </FrameLayout>
-            </androidx.cardview.widget.CardView>
+                android:layout_height="wrap_content"
+                android:orientation="vertical" />
 
         </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
+    <!-- NAVIGATION -->
     <include
         android:id="@+id/nav_include"
         layout="@layout/navigation_overlay"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:visibility="gone"
-        android:elevation="1000dp"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
