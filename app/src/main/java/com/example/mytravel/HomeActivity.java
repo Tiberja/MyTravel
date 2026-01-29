@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.net.Uri;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -179,9 +180,19 @@ public class HomeActivity extends AppCompatActivity {
             ));
             img.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
-            if (bild != null) {
-                int resId = getResources().getIdentifier(bild, "drawable", getPackageName());
-                if (resId != 0) img.setImageResource(resId);
+            if (bild != null && !bild.isEmpty()) {
+
+                // 1) NEU: Galerie/Datei (Uri)
+                if (bild.startsWith("content://") || bild.startsWith("file://")) {
+                    img.setImageURI(Uri.parse(bild));
+
+                    // 2) ALT: drawable Name ("london")
+                } else {
+                    int resId = getResources().getIdentifier(bild, "drawable", getPackageName());
+                    if (resId != 0) {
+                        img.setImageResource(resId);
+                    }
+                }
             }
 
             TextView title = new TextView(this);
