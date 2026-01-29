@@ -7,23 +7,67 @@
     android:layout_height="match_parent"
     tools:context=".CalendarActivity">
 
+    <!-- Blauer Balken (Standard) -->
     <View
         android:id="@+id/view"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="70dp"
         android:background="#ADD1EF"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/tvTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Kalender"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        app:layout_constraintTop_toTopOf="@id/view"
+        app:layout_constraintBottom_toBottomOf="@id/view"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+    <!-- Pfeile + Monat UNTER dem blauen Balken -->
+    <ImageView
+        android:id="@+id/navigation_btn"
+        android:layout_width="58dp"
+        android:layout_height="66dp"
+        android:layout_marginEnd="12dp"
+        android:clickable="true"
+        android:padding="12dp"
+        app:layout_constraintBottom_toBottomOf="@id/view"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintTop_toTopOf="@id/view"
+        app:layout_constraintVertical_bias="1.0"
+        app:srcCompat="@drawable/navigation" />
 
     <ImageView
         android:id="@+id/btnPrev"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:padding="8dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="6dp"
+        android:padding="10dp"
+        android:tint="@android:color/darker_gray"
         android:src="@android:drawable/ic_media_previous"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/view"
-        app:layout_constraintBottom_toBottomOf="@id/view" />
+        app:layout_constraintTop_toBottomOf="@id/view" />
+
+    <ImageView
+        android:id="@+id/btnNext"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginTop="6dp"
+        android:padding="10dp"
+        android:tint="@android:color/darker_gray"
+        android:src="@android:drawable/ic_media_next"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view" />
 
     <TextView
         android:id="@+id/tvMonth"
@@ -31,38 +75,14 @@
         android:layout_height="wrap_content"
         android:text="Dezember 2025"
         android:textStyle="bold"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textColor="@android:color/black"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
         app:layout_constraintStart_toEndOf="@id/btnPrev"
         app:layout_constraintEnd_toStartOf="@id/btnNext"
-        app:layout_constraintTop_toTopOf="@id/view"
-        app:layout_constraintBottom_toBottomOf="@id/view" />
+        app:layout_constraintTop_toTopOf="@id/btnPrev"
+        app:layout_constraintBottom_toBottomOf="@id/btnPrev" />
 
-    <ImageView
-        android:id="@+id/btnNext"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:padding="8dp"
-        android:src="@android:drawable/ic_media_next"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/view"
-        app:layout_constraintBottom_toBottomOf="@id/view" />
-
-    <ImageView
-        android:id="@+id/navigation_btn"
-        android:layout_width="48dp"
-        android:layout_height="56dp"
-        android:layout_marginEnd="16dp"
-        android:clickable="true"
-        android:elevation="21dp"
-        android:padding="10dp"
-        app:layout_constraintBottom_toBottomOf="@id/view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@id/view"
-        app:srcCompat="@drawable/navigation" />
-
+    <!-- Wochentage unter den Pfeilen -->
     <LinearLayout
         android:id="@+id/weekHeader"
         android:layout_width="0dp"
@@ -73,7 +93,7 @@
         android:gravity="center_vertical"
         android:background="#F5F5F5"
         android:paddingVertical="6dp"
-        app:layout_constraintTop_toBottomOf="@id/view"
+        app:layout_constraintTop_toBottomOf="@id/btnPrev"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent">
 
@@ -108,6 +128,5 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:elevation="1000dp" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

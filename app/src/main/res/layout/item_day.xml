@@ -17,6 +17,18 @@
         android:textStyle="bold" />
 
     <TextView
+        android:id="@+id/tvTripName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="12sp"
+        android:textStyle="bold"
+        android:textColor="@android:color/black"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:visibility="gone"
+        android:text="Reise" />
+
+    <TextView
         android:id="@+id/tvNotePreview"
         android:layout_width="match_parent"
         android:layout_height="0dp"

@@ -34,10 +34,9 @@ public class CalendarActivity extends AppCompatActivity {
 
     private TextView tvMonth;
     private ImageView btnPrev, btnNext;
-
     private RecyclerView rvCalendar;
-    private CalendarAdapter adapter;
 
+    private CalendarAdapter adapter;
     private Calendar calendar;
 
     private FirebaseFirestore db;
@@ -72,10 +71,19 @@ public class CalendarActivity extends AppCompatActivity {
             renderMonth();
         });
 
-        renderMonth();
+        setupNavigationOverlay();
+        setupInsets();
 
+        renderMonth();
+    }
+
+    private void setupNavigationOverlay() {
         ImageView navBtn = findViewById(R.id.navigation_btn);
         View navRoot = findViewById(R.id.nav_include);
+
+        // Falls das Overlay mal nicht im Layout ist, soll die App nicht crashen
+        if (navBtn == null || navRoot == null) return;
+
         View backdrop = navRoot.findViewById(R.id.nav_backdrop);
 
         navBtn.setOnClickListener(v -> {
@@ -83,34 +91,43 @@ public class CalendarActivity extends AppCompatActivity {
             navRoot.setVisibility(navRoot.getVisibility() == View.VISIBLE ? View.GONE : View.VISIBLE);
         });
 
-        backdrop.setOnClickListener(v -> navRoot.setVisibility(View.GONE));
+        if (backdrop != null) {
+            backdrop.setOnClickListener(v -> navRoot.setVisibility(View.GONE));
+        }
 
-        navRoot.findViewById(R.id.menu_home).setOnClickListener(v -> {
+        View home = navRoot.findViewById(R.id.menu_home);
+        if (home != null) home.setOnClickListener(v -> {
             navRoot.setVisibility(View.GONE);
             startActivity(new Intent(this, HomeActivity.class));
             finish();
         });
 
-        navRoot.findViewById(R.id.menu_calendar).setOnClickListener(v -> navRoot.setVisibility(View.GONE));
+        View calendarMenu = navRoot.findViewById(R.id.menu_calendar);
+        if (calendarMenu != null) calendarMenu.setOnClickListener(v -> navRoot.setVisibility(View.GONE));
 
-        navRoot.findViewById(R.id.menu_settings).setOnClickListener(v -> {
+        View settings = navRoot.findViewById(R.id.menu_settings);
+        if (settings != null) settings.setOnClickListener(v -> {
             navRoot.setVisibility(View.GONE);
             startActivity(new Intent(this, SettingsActivity.class));
             finish();
         });
 
-        navRoot.findViewById(R.id.menu_newtrip).setOnClickListener(v -> {
+        View newTrip = navRoot.findViewById(R.id.menu_newtrip);
+        if (newTrip != null) newTrip.setOnClickListener(v -> {
             navRoot.setVisibility(View.GONE);
             startActivity(new Intent(this, NewTripActivity.class));
             finish();
         });
 
-        navRoot.findViewById(R.id.menu_worldmap).setOnClickListener(v -> {
+        View worldMap = navRoot.findViewById(R.id.menu_worldmap);
+        if (worldMap != null) worldMap.setOnClickListener(v -> {
             navRoot.setVisibility(View.GONE);
             startActivity(new Intent(this, WorldMapActivity.class));
             finish();
         });
+    }
 
+    private void setupInsets() {
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets bars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(bars.left, bars.top, bars.right, bars.bottom);
@@ -122,12 +139,12 @@ public class CalendarActivity extends AppCompatActivity {
         SimpleDateFormat headerFormat = new SimpleDateFormat("MMMM yyyy", Locale.GERMAN);
         tvMonth.setText(headerFormat.format(calendar.getTime()));
 
-        List<String> cells = buildCalendarCells(calendar);
-        adapter.setCells(cells);
-
+        adapter.setCells(buildCalendarCells(calendar));
         loadNotesForMonth(calendar);
+        loadTripsForMonth(calendar);
     }
 
+    // Baut immer 42 Zellen, damit das Grid immer gleich groß ist
     private List<String> buildCalendarCells(Calendar cal) {
         List<String> result = new ArrayList<>(42);
 
@@ -154,7 +171,6 @@ public class CalendarActivity extends AppCompatActivity {
         return result;
     }
 
-    // Dialog
     private void openAddNoteDialog(String dateKey) {
         View navRoot = findViewById(R.id.nav_include);
         if (navRoot != null) navRoot.setVisibility(View.GONE);
@@ -209,7 +225,7 @@ public class CalendarActivity extends AppCompatActivity {
 
         Map<String, Object> data = new HashMap<>();
         data.put("date", dateKey);
-        data.put("note", noteText.trim());
+        data.put("note", noteText);
 
         db.collection("benutzer")
                 .document(uid)
@@ -235,11 +251,54 @@ public class CalendarActivity extends AppCompatActivity {
                     qs.getDocuments().forEach(doc -> {
                         CalendarNote note = doc.toObject(CalendarNote.class);
                         if (note != null && note.date != null && note.date.startsWith(monthPrefix)) {
-                            notes.put(note.date, note.note);
+                            notes.put(note.date, note.note == null ? "" : note.note);
                         }
                     });
 
                     adapter.setNotes(notes);
+                });
+    }
+    private void loadTripsForMonth(Calendar cal) {
+        if (uid == null) return;
+
+        SimpleDateFormat monthFormat = new SimpleDateFormat("yyyy-MM", Locale.US);
+        String monthPrefix = monthFormat.format(cal.getTime());
+
+        db.collection("benutzer")
+                .document(uid)
+                .collection("reisen")
+                .get(Source.SERVER)
+                .addOnSuccessListener(qs -> {
+                    Map<String, String> trips = new HashMap<>();
+
+                    for (com.google.firebase.firestore.DocumentSnapshot doc : qs.getDocuments()) {
+                        com.google.firebase.Timestamp startTs = doc.getTimestamp("startdatum");
+                        com.google.firebase.Timestamp endTs = doc.getTimestamp("enddatum");
+                        String ort = doc.getString("ort");
+
+                        if (startTs == null || endTs == null || ort == null) continue;
+
+                        Calendar start = Calendar.getInstance();
+                        start.setTime(startTs.toDate());
+
+                        Calendar end = Calendar.getInstance();
+                        end.setTime(endTs.toDate());
+
+                        Calendar day = (Calendar) start.clone();
+
+                        while (!day.after(end)) {
+                            String key = new SimpleDateFormat("yyyy-MM-dd", Locale.US).format(day.getTime());
+
+                            // nur Tage vom aktuellen Monat merken
+                            if (key.startsWith(monthPrefix)) {
+                                trips.put(key, ort);
+                            }
+
+                            day.add(Calendar.DAY_OF_MONTH, 1);
+                        }
+                    }
+
+                    adapter.setTrips(trips);
                 });
     }
 }
