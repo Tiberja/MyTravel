@@ -34,7 +34,7 @@ public class TripDetailsActivity extends AppCompatActivity {
     private String reiseId;
 
     private ImageView imgCity, btnBack, btnAddPack, btnAddActivity, btnAddFoodspot;
-    private TextView tvCity;
+    private TextView tvCity, tvTripDates;
 
     private LinearLayout packlistContainer;
     private LinearLayout activitiesContainer;
@@ -45,9 +45,11 @@ public class TripDetailsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_trip_details);
 
+        // Views
         imgCity = findViewById(R.id.imgCity);
         btnBack = findViewById(R.id.btnBack);
         tvCity = findViewById(R.id.tvCity);
+        tvTripDates = findViewById(R.id.tvTripDates);
 
         btnAddPack = findViewById(R.id.btnAddPack);
         btnAddActivity = findViewById(R.id.btnAddActivity);
@@ -59,6 +61,7 @@ public class TripDetailsActivity extends AppCompatActivity {
 
         btnBack.setOnClickListener(v -> finish());
 
+        // Login prüfen
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
             Toast.makeText(this, "Nicht eingeloggt.", Toast.LENGTH_SHORT).show();
@@ -67,6 +70,8 @@ public class TripDetailsActivity extends AppCompatActivity {
         }
 
         uid = user.getUid();
+
+        // Reise-ID prüfen
         reiseId = getIntent().getStringExtra("reiseId");
         if (reiseId == null || reiseId.trim().isEmpty()) {
             Toast.makeText(this, "Keine Reise-ID übergeben.", Toast.LENGTH_SHORT).show();
@@ -76,13 +81,13 @@ public class TripDetailsActivity extends AppCompatActivity {
 
         db = FirebaseFirestore.getInstance();
 
-        // Trip + Listen laden
+        // Daten laden
         loadTrip();
         loadPacklist();
         loadActivities();
         loadFoodspots();
 
-        // PLUS Buttons (mit echten Buttons im Dialog)
+        // + Buttons
         btnAddPack.setOnClickListener(v ->
                 showAddDialogSimple("Packliste hinzufügen", "z.B. Spiegel", this::addPackItem)
         );
@@ -96,7 +101,7 @@ public class TripDetailsActivity extends AppCompatActivity {
         );
     }
 
-    // Bild + Stadtname
+    // Trip-Infos laden (Ort + Bild + Datum)
     private void loadTrip() {
         db.collection("benutzer").document(uid)
                 .collection("reisen").document(reiseId)
@@ -112,15 +117,26 @@ public class TripDetailsActivity extends AppCompatActivity {
                     Timestamp start = doc.getTimestamp("startdatum");
                     Timestamp ende = doc.getTimestamp("enddatum");
 
+                    // Stadtname
                     if (ort != null && !ort.trim().isEmpty()) {
                         tvCity.setText(ort.toUpperCase(Locale.getDefault()));
                     } else {
                         tvCity.setText("CITY");
                     }
 
+                    // Datum anzeigen
+                    String startStr = formatDate(start);
+                    String endStr = formatDate(ende);
+                    if (start == null || ende == null) {
+                        tvTripDates.setText("");
+                    } else {
+                        tvTripDates.setText(startStr + " - " + endStr);
+                    }
+
+                    // Bild setzen
                     setImageFromName(bild);
 
-                    Log.d(TAG, "Trip: ort=" + ort + " start=" + formatDate(start) + " ende=" + formatDate(ende));
+                    Log.d(TAG, "Trip: ort=" + ort + " start=" + startStr + " ende=" + endStr);
                 })
                 .addOnFailureListener(e -> {
                     Log.e(TAG, "Trip laden fehlgeschlagen", e);
@@ -159,14 +175,11 @@ public class TripDetailsActivity extends AppCompatActivity {
                 .get()
                 .addOnSuccessListener(q -> {
                     if (q.isEmpty()) {
-                        TextView tv = new TextView(this);
-                        tv.setText("Keine Packliste gespeichert.");
-                        tv.setTextColor(getColor(android.R.color.black));
-                        packlistContainer.addView(tv);
+                        showEmptyText(packlistContainer, "Keine Packliste gespeichert.");
                         return;
                     }
 
-                    ColorStateList black = ColorStateList.valueOf(getColor(android.R.color.black));
+                    ColorStateList blackTint = ColorStateList.valueOf(getColor(android.R.color.black));
 
                     for (QueryDocumentSnapshot d : q) {
                         String name = d.getString("name");
@@ -176,7 +189,7 @@ public class TripDetailsActivity extends AppCompatActivity {
                         cb.setText(name != null ? name : d.getId());
                         cb.setChecked(checked);
                         cb.setTextColor(getColor(android.R.color.black));
-                        cb.setButtonTintList(black);
+                        cb.setButtonTintList(blackTint);
                         cb.setPadding(0, 6, 0, 6);
 
                         // Haken speichern
@@ -185,7 +198,7 @@ public class TripDetailsActivity extends AppCompatActivity {
                                         .addOnFailureListener(e -> Log.e(TAG, "Packlist checked update fail", e))
                         );
 
-                        // Long-Press -> Bearbeiten / Löschen
+                        // Long-Press: Bearbeiten / Löschen
                         cb.setOnLongClickListener(v -> {
                             String[] options = {"✏️ Bearbeiten", "🗑️ Löschen"};
 
@@ -227,7 +240,9 @@ public class TripDetailsActivity extends AppCompatActivity {
                 .collection("packliste")
                 .add(m)
                 .addOnSuccessListener(r -> loadPacklist())
-                .addOnFailureListener(e -> Toast.makeText(this, "Fehler: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                .addOnFailureListener(e ->
+                        Toast.makeText(this, "Fehler: " + e.getMessage(), Toast.LENGTH_LONG).show()
+                );
     }
 
     // ACTIVITIES
@@ -240,10 +255,7 @@ public class TripDetailsActivity extends AppCompatActivity {
                 .get()
                 .addOnSuccessListener(q -> {
                     if (q.isEmpty()) {
-                        TextView tv = new TextView(this);
-                        tv.setText("Keine Aktivitäten gespeichert.");
-                        tv.setTextColor(getColor(android.R.color.black));
-                        activitiesContainer.addView(tv);
+                        showEmptyText(activitiesContainer, "Keine Aktivitäten gespeichert.");
                         return;
                     }
 
@@ -297,10 +309,12 @@ public class TripDetailsActivity extends AppCompatActivity {
                 .collection("aktivitaeten")
                 .add(m)
                 .addOnSuccessListener(r -> loadActivities())
-                .addOnFailureListener(e -> Toast.makeText(this, "Fehler: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                .addOnFailureListener(e ->
+                        Toast.makeText(this, "Fehler: " + e.getMessage(), Toast.LENGTH_LONG).show()
+                );
     }
 
-    // FOODSPOTS
+    //FOODSPOTS
     private void loadFoodspots() {
         foodspotsContainer.removeAllViews();
 
@@ -310,10 +324,7 @@ public class TripDetailsActivity extends AppCompatActivity {
                 .get()
                 .addOnSuccessListener(q -> {
                     if (q.isEmpty()) {
-                        TextView tv = new TextView(this);
-                        tv.setText("Keine Foodspots gespeichert.");
-                        tv.setTextColor(getColor(android.R.color.black));
-                        foodspotsContainer.addView(tv);
+                        showEmptyText(foodspotsContainer, "Keine Foodspots gespeichert.");
                         return;
                     }
 
@@ -367,10 +378,20 @@ public class TripDetailsActivity extends AppCompatActivity {
                 .collection("foodspots")
                 .add(m)
                 .addOnSuccessListener(r -> loadFoodspots())
-                .addOnFailureListener(e -> Toast.makeText(this, "Fehler: " + e.getMessage(), Toast.LENGTH_LONG).show());
+                .addOnFailureListener(e ->
+                        Toast.makeText(this, "Fehler: " + e.getMessage(), Toast.LENGTH_LONG).show()
+                );
     }
 
-    // DIALOGS mit Buttons
+    // MINI-HELPER
+    private void showEmptyText(LinearLayout container, String text) {
+        TextView tv = new TextView(this);
+        tv.setText(text);
+        tv.setTextColor(getColor(android.R.color.black));
+        container.addView(tv);
+    }
+
+    // DIALOGS
     private interface OnTextSaved {
         void onSave(String text);
     }

@@ -30,7 +30,7 @@
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="56dp"
+                android:layout_height="66dp"
                 android:background="#ADD1EF">
 
                 <ImageView
@@ -40,9 +40,9 @@
                     android:layout_marginStart="12dp"
                     android:padding="6dp"
                     android:src="@android:drawable/ic_media_previous"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent"
                     tools:ignore="ContentDescription" />
 
                 <TextView
@@ -50,13 +50,28 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="CITY"
-                    android:textStyle="bold"
-                    android:textSize="20sp"
                     android:textColor="@android:color/black"
-                    app:layout_constraintStart_toStartOf="parent"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="parent" />
+                    app:layout_constraintVertical_bias="0.384" />
+
+                <TextView
+                    android:id="@+id/tvTripDates"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="2dp"
+                    android:text="10.03.2026 - 17.03.2026"
+                    android:textColor="@android:color/black"
+                    android:textSize="13sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvCity" />
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
