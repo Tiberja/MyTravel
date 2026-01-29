@@ -62,7 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginTop="20dp"
-            android:backgroundTint="#4A90E2"
+            android:backgroundTint="#ADD1EF"
             android:text="Anmelden" />
 
         <TextView
