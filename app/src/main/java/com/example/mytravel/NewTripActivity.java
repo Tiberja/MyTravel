@@ -20,13 +20,13 @@ import java.util.Map;
 
 public class NewTripActivity extends AppCompatActivity {
 
-    private EditText etOrt, etZeitraum;
+    private EditText etOrt, etStartDate, etEndDate;
     private ImageView ivPreview;
     private Uri selectedImageUri = null;
 
     private FirebaseFirestore db;
 
-    private ActivityResultLauncher<String> pickImageLauncher;
+    private ActivityResultLauncher<String[]> pickImageLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,19 +38,24 @@ public class NewTripActivity extends AppCompatActivity {
 
         // Views
         etOrt = findViewById(R.id.destination);
-        etZeitraum = findViewById(R.id.date);
+        etStartDate = findViewById(R.id.start_date);
+        etEndDate = findViewById(R.id.end_date);
         ivPreview = findViewById(R.id.imageView6);
 
         Button btnAbbrechen = findViewById(R.id.btn_abbrechen);
         Button btnFertig = findViewById(R.id.btn_fertig);
 
-        // =========================
+
         // Bild aus Galerie wählen
-        // =========================
         pickImageLauncher = registerForActivityResult(
-                new ActivityResultContracts.GetContent(),
+                new ActivityResultContracts.OpenDocument(),
                 uri -> {
                     if (uri != null) {
+                        getContentResolver().takePersistableUriPermission(
+                                uri,
+                                Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        );
+
                         selectedImageUri = uri;
                         ivPreview.setImageURI(uri);
                     }
@@ -58,31 +63,38 @@ public class NewTripActivity extends AppCompatActivity {
         );
 
         findViewById(R.id.bildHochladen).setOnClickListener(v -> {
-            pickImageLauncher.launch("image/*");
+            pickImageLauncher.launch(new String[]{"image/*"});
         });
 
-        // =========================
+
+
         // Abbrechen -> Home
-        // =========================
+
         btnAbbrechen.setOnClickListener(v -> goHome());
 
-        // =========================
+
         // Fertig -> Speichern
-        // =========================
+
         btnFertig.setOnClickListener(v -> saveTrip());
     }
 
     private void saveTrip() {
         String ort = etOrt.getText().toString().trim();
-        String zeitraum = etZeitraum.getText().toString().trim();
+        String startdatum = etStartDate.getText().toString().trim();
+        String enddatum = etEndDate.getText().toString().trim();
 
         if (ort.isEmpty()) {
             etOrt.setError("Bitte Reiseziel eingeben");
             return;
         }
 
-        if (zeitraum.isEmpty()) {
-            etZeitraum.setError("Bitte Zeitraum eingeben");
+        if (startdatum.isEmpty()) {
+            etStartDate.setError("Bitte Startdatum eingeben");
+            return;
+        }
+
+        if (enddatum.isEmpty()) {
+            etEndDate.setError("Bitte Enddatum eingeben");
             return;
         }
 
@@ -98,7 +110,8 @@ public class NewTripActivity extends AppCompatActivity {
         // Firestore-Daten
         Map<String, Object> reise = new HashMap<>();
         reise.put("ort", ort);
-        reise.put("zeitraum", zeitraum);
+        reise.put("startdatum", startdatum);
+        reise.put("enddatum", enddatum);
 
         // Bild lokal (Uri als String)
         if (selectedImageUri != null) {

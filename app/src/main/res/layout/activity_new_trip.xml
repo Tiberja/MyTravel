@@ -30,24 +30,12 @@
         app:layout_constraintStart_toStartOf="@+id/balken"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/navigation_btn"
-        android:layout_width="48dp"
-        android:layout_height="56dp"
-        android:layout_marginEnd="20dp"
-        android:clickable="true"
-        android:elevation="21dp"
-        app:layout_constraintBottom_toBottomOf="@+id/balken"
-        app:layout_constraintEnd_toEndOf="@+id/balken"
-        app:layout_constraintTop_toTopOf="@+id/balken"
-        app:srcCompat="@drawable/navigation" />
-
     <EditText
         android:id="@+id/destination"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="30dp"
         android:background="#F0F0F0"
         android:elevation="20dp"
@@ -60,15 +48,16 @@
         app:layout_constraintTop_toBottomOf="@+id/balken" />
 
     <EditText
-        android:id="@+id/date"
+        android:id="@+id/start_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="30dp"
         android:background="#F0F0F0"
+        android:elevation="20dp"
         android:padding="12dp"
-        android:hint="Zeitraum (z.B. 10.03.2026 - 17.03.2026)"
+        android:hint="Startdatum"
         android:inputType="text"
         android:focusable="true"
         android:focusableInTouchMode="true"
@@ -77,18 +66,37 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
+    <EditText
+        android:id="@+id/end_date"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="30dp"
+        android:background="#F0F0F0"
+        android:elevation="20dp"
+        android:padding="12dp"
+        android:hint="Enddatum"
+        android:inputType="text"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:clickable="true"
+        app:layout_constraintTop_toBottomOf="@+id/start_date"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/bildHochladen"
         android:layout_width="0dp"
         android:layout_height="300dp"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="30dp"
         app:cardBackgroundColor="#F0F0F0"
         app:cardElevation="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/date"
+        app:layout_constraintTop_toBottomOf="@+id/end_date"
         android:clickable="true"
         android:focusable="true">
 
@@ -123,7 +131,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="14dp"
         android:backgroundTint="#ADD1EF"
         android:text="Abbrechen"
@@ -142,7 +150,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="14dp"
-        android:layout_marginTop="40dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="30dp"
         android:backgroundTint="#ADD1EF"
         android:text="Fertig"

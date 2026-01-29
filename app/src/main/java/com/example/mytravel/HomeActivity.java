@@ -184,7 +184,14 @@ public class HomeActivity extends AppCompatActivity {
 
                 // 1) NEU: Galerie/Datei (Uri)
                 if (bild.startsWith("content://") || bild.startsWith("file://")) {
-                    img.setImageURI(Uri.parse(bild));
+                    if (bild.startsWith("content://") || bild.startsWith("file://")) {
+                        try {
+                            img.setImageURI(Uri.parse(bild));
+                        } catch (SecurityException e) {
+                            img.setImageResource(android.R.drawable.ic_menu_gallery); // fallback
+                        }
+                    }
+
 
                     // 2) ALT: drawable Name ("london")
                 } else {
