@@ -126,13 +126,12 @@ public class NewTripActivity extends AppCompatActivity {
             return;
         }
 
-        // Firestore-Daten
+        // Firestore Daten
         Map<String, Object> reise = new HashMap<>();
         reise.put("ort", ort);
         reise.put("startdatum", startTs);
         reise.put("enddatum", endTs);
 
-        // Bild lokal (Uri als String)
         if (selectedImageUri != null) {
             reise.put("bild", selectedImageUri.toString());
         } else {
@@ -154,7 +153,6 @@ public class NewTripActivity extends AppCompatActivity {
     }
 
     private void goHome() {
-        // ⚠️ anpassen, falls deine Home-Activity anders heißt
         Intent intent = new Intent(this, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);

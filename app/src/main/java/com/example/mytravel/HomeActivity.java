@@ -27,11 +27,15 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import androidx.appcompat.app.AlertDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeActivity extends AppCompatActivity {
+
+    private String uid;
+    private FirebaseFirestore db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,7 +43,7 @@ public class HomeActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home);
 
-        // AUTH CHECK
+        // auth check
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
             Toast.makeText(this, "Nicht eingeloggt", Toast.LENGTH_SHORT).show();
@@ -51,12 +55,12 @@ public class HomeActivity extends AppCompatActivity {
         LinearLayout tripsContainer = findViewById(R.id.tripsContainer);
         EditText search = findViewById(R.id.suchen);
 
-        FirebaseFirestore db = FirebaseFirestore.getInstance();
-        String uid = user.getUid();
+        db = FirebaseFirestore.getInstance();
+        uid = user.getUid();
 
         List<DocumentSnapshot> allTrips = new ArrayList<>();
 
-        // FIRESTORE LIVE LOAD
+        // Firestore laden
         db.collection("benutzer")
                 .document(uid)
                 .collection("reisen")
@@ -73,7 +77,7 @@ public class HomeActivity extends AppCompatActivity {
                     renderTrips(tripsContainer, allTrips, search.getText().toString());
                 });
 
-        // SEARCH (NUR ANFANGSBUSCHTABEN)
+        // Suchleiste
         search.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override public void afterTextChanged(Editable s) {}
@@ -84,7 +88,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        // NAVIGATION
+        // Navigation
         ImageView btn = findViewById(R.id.navigation_btn);
 
         View navRoot = findViewById(R.id.nav_include);
@@ -129,7 +133,7 @@ public class HomeActivity extends AppCompatActivity {
                     finish();
                 });
 
-        // INSETS
+        // insets
         View main = findViewById(R.id.main);
         if (main != null) {
             ViewCompat.setOnApplyWindowInsetsListener(main, (v, insets) -> {
@@ -140,7 +144,7 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    // ===== RENDER REISEN =====
+    // Reisen anzeigen
     private void renderTrips(LinearLayout container, List<DocumentSnapshot> docs, String query) {
         container.removeAllViews();
 
@@ -153,7 +157,6 @@ public class HomeActivity extends AppCompatActivity {
 
             String ortLower = ort == null ? "" : ort.toLowerCase();
 
-            // NUR ANFANG
             boolean match = q.isEmpty() || ortLower.startsWith(q);
             if (!match) continue;
 
@@ -182,24 +185,15 @@ public class HomeActivity extends AppCompatActivity {
             img.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
             if (bild != null && !bild.isEmpty()) {
-
-                // 1) NEU: Galerie/Datei (Uri)
                 if (bild.startsWith("content://") || bild.startsWith("file://")) {
-                    if (bild.startsWith("content://") || bild.startsWith("file://")) {
-                        try {
-                            img.setImageURI(Uri.parse(bild));
-                        } catch (SecurityException e) {
-                            img.setImageResource(android.R.drawable.ic_menu_gallery); // fallback
-                        }
+                    try {
+                        img.setImageURI(Uri.parse(bild));
+                    } catch (SecurityException e) {
+                        img.setImageResource(android.R.drawable.ic_menu_gallery);
                     }
-
-
-                    // 2) ALT: drawable Name ("london")
                 } else {
                     int resId = getResources().getIdentifier(bild, "drawable", getPackageName());
-                    if (resId != 0) {
-                        img.setImageResource(resId);
-                    }
+                    if (resId != 0) img.setImageResource(resId);
                 }
             }
 
@@ -223,10 +217,34 @@ public class HomeActivity extends AppCompatActivity {
             frame.addView(title);
             card.addView(frame);
 
+            // normaler Klick -> Details
             card.setOnClickListener(v -> {
                 Intent i = new Intent(this, TripDetailsActivity.class);
                 i.putExtra("reiseId", id);
                 startActivity(i);
+            });
+
+            // langer Klick -> löschen
+            card.setOnLongClickListener(v -> {
+                new AlertDialog.Builder(this)
+                        .setTitle("Reise löschen")
+                        .setMessage("Willst du \"" + (ort == null ? "" : ort) + "\" wirklich löschen?")
+                        .setPositiveButton("✅", (dialog, which) -> {
+                            db.collection("benutzer")
+                                    .document(uid)
+                                    .collection("reisen")
+                                    .document(id)
+                                    .delete()
+                                    .addOnSuccessListener(aVoid ->
+                                            Toast.makeText(this, "Reise gelöscht", Toast.LENGTH_SHORT).show()
+                                    )
+                                    .addOnFailureListener(err ->
+                                            Toast.makeText(this, "Fehler: " + err.getMessage(), Toast.LENGTH_LONG).show()
+                                    );
+                        })
+                        .setNegativeButton("❌", null)
+                        .show();
+                return true;
             });
 
             container.addView(card);

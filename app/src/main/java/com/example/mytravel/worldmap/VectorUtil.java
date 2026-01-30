@@ -21,7 +21,6 @@ public class VectorUtil {
             Object renderer = getField(vectorState, "mVPathRenderer");
             if (renderer == null) return false;
 
-            // ✅ 1) Best case: direkte Lookup-Map nach Namen (stabiler als Tree-Walk)
             Object vgTargets = tryGetField(renderer, "mVGTargets");
             if (vgTargets instanceof Map) {
                 Object targetObj = ((Map<?, ?>) vgTargets).get(targetName);
@@ -34,7 +33,6 @@ public class VectorUtil {
                 }
             }
 
-            // ✅ 2) Fallback: Tree Walk (wie vorher, aber Name-Felder flexibler)
             Object rootGroup = getField(renderer, "mRootGroup");
             if (rootGroup == null) return false;
 
@@ -74,14 +72,14 @@ public class VectorUtil {
 
     private static boolean setFillOnAnyPathObject(Object obj, int color) {
         try {
-            // A) mFillColor direkt int/Integer
+
             Object fill = tryGetField(obj, "mFillColor");
             if (fill instanceof Integer) {
                 setField(obj, "mFillColor", color);
                 return true;
             }
 
-            // B) AndroidX: ComplexColorCompat -> mColor
+
             if (fill != null) {
                 Object inner = tryGetField(fill, "mColor");
                 if (inner instanceof Integer) {
@@ -90,7 +88,7 @@ public class VectorUtil {
                 }
             }
 
-            // C) Paint-Fallback
+
             Object fillPaint = tryGetField(obj, "mFillPaint");
             if (fillPaint instanceof Paint) {
                 ((Paint) fillPaint).setColor(color);
@@ -103,7 +101,7 @@ public class VectorUtil {
         return false;
     }
 
-    // ---------------- helpers ----------------
+
 
     private static Object getField(Object obj, String fieldName) throws Exception {
         Field f = findField(obj.getClass(), fieldName);

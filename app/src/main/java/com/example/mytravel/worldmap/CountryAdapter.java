@@ -16,7 +16,6 @@ import java.util.Set;
 
 public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.VH> {
 
-    // 🔁 Callback zur Activity
     public interface OnCountryClick {
         void onClick(Country country);
     }
@@ -25,7 +24,7 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.VH> {
     private final Set<String> visited;
     private final OnCountryClick listener;
 
-    // 🔹 Konstruktor
+    // Konstruktor
     public CountryAdapter(List<Country> countries,
                           Set<String> visited,
                           OnCountryClick listener) {
@@ -34,7 +33,7 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.VH> {
         this.listener = listener;
     }
 
-    // 🔹 XML laden (item_country.xml)
+    // XML laden (item_country.xml)
     @NonNull
     @Override
     public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -43,7 +42,7 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.VH> {
         return new VH(v);
     }
 
-    // 🔹 Daten ins Item schreiben
+    // Daten ins Item schreiben
     @Override
     public void onBindViewHolder(@NonNull VH h, int position) {
         Country c = countries.get(position);
@@ -62,7 +61,7 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.VH> {
         return countries.size();
     }
 
-    // 🔄 Liste neu zeichnen
+    // Liste neu zeichnen
     public void refresh() {
         notifyDataSetChanged();
     }

@@ -32,7 +32,7 @@ import java.util.Set;
 
 public class WorldMapActivity extends AppCompatActivity {
 
-    // UI
+    // Ui
     private ImageView mapImage;
     private TextView counterTv;
 
@@ -60,15 +60,15 @@ public class WorldMapActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_world_map);
 
-        // ---------------- Views ----------------
+
         mapImage = findViewById(R.id.imageView);
         counterTv = findViewById(R.id.textView);
 
-        // ---------------- VectorChildFinder ----------------
+
         // world.xml ist direkt im ImageView
         vectorFinder = new VectorChildFinder(this, R.drawable.world, mapImage);
 
-        // ---------------- RecyclerView ----------------
+
         RecyclerView rv = findViewById(R.id.countryList);
         rv.setLayoutManager(new LinearLayoutManager(this));
 
@@ -100,7 +100,7 @@ public class WorldMapActivity extends AppCompatActivity {
 
         updateCounter();
 
-        // ---------------- Firebase ----------------
+        //Firebase
         db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -108,7 +108,7 @@ public class WorldMapActivity extends AppCompatActivity {
             loadVisitedFromFirestore(user.getUid());
         }
 
-        // ---------------- Navigation Overlay ----------------
+        //Navigation
         ImageView btn = findViewById(R.id.navigation_btn);
         View navRoot = findViewById(R.id.nav_include);
         View backdrop = navRoot.findViewById(R.id.nav_backdrop);
@@ -150,7 +150,7 @@ public class WorldMapActivity extends AppCompatActivity {
                 navRoot.setVisibility(View.GONE)
         );
 
-        // ---------------- Insets ----------------
+        //Insets
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -158,9 +158,7 @@ public class WorldMapActivity extends AppCompatActivity {
         });
     }
 
-    // ======================================================
     // Klick auf Land in der Liste
-    // ======================================================
     private void onCountryClicked(Country c) {
         boolean nowVisited;
 
@@ -193,9 +191,8 @@ public class WorldMapActivity extends AppCompatActivity {
         }
     }
 
-    // ======================================================
-    // Firebase: Laden
-    // ======================================================
+
+    // Firebase -> Laden
     private void loadVisitedFromFirestore(String uid) {
         db.collection("benutzer")
                 .document(uid)
@@ -227,9 +224,7 @@ public class WorldMapActivity extends AppCompatActivity {
                 });
     }
 
-    // ======================================================
-    // Firebase: Speichern / Löschen
-    // ======================================================
+    // Firebase -> Speichern/Löschen
     private void saveVisitedToFirestore(String uid, String countryId, boolean isVisited) {
         com.google.firebase.firestore.DocumentReference ref = db.collection("benutzer")
                 .document(uid)
@@ -247,9 +242,7 @@ public class WorldMapActivity extends AppCompatActivity {
         }
     }
 
-    // ======================================================
-    // Counter
-    // ======================================================
+    // Zähler
     private void updateCounter() {
         int count = 0;
         for (Country c : countries) {
