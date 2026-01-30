@@ -18,6 +18,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.mytravel.worldmap.WorldMapActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Source;
@@ -122,7 +123,7 @@ public class CalendarActivity extends AppCompatActivity {
         View worldMap = navRoot.findViewById(R.id.menu_worldmap);
         if (worldMap != null) worldMap.setOnClickListener(v -> {
             navRoot.setVisibility(View.GONE);
-            startActivity(new Intent(this, WorldMapActivity.class));
+            startActivity(new Intent(this, com.example.mytravel.worldmap.WorldMapActivity.class));
             finish();
         });
     }

@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="56dp"
     app:cardBackgroundColor="#F0F0F0"
-    app:cardCornerRadius="12dp"
     app:cardElevation="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,7 +14,7 @@
         android:paddingEnd="20dp">
 
         <ImageView
-            android:id="@+id/Flagge"
+            android:id="@+id/flagge"
             android:layout_width="36dp"
             android:layout_height="24dp"
             android:layout_marginStart="20dp"
@@ -25,7 +24,7 @@
             app:srcCompat="@drawable/deutschland_flagge" />
 
         <TextView
-            android:id="@+id/CountryName"
+            android:id="@+id/countryName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -34,7 +33,7 @@
             android:textSize="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/häckchen"
-            app:layout_constraintStart_toEndOf="@id/Flagge"
+            app:layout_constraintStart_toEndOf="@id/flagge"
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView

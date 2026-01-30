@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#FFFEFE"
-    tools:context=".WorldMapActivity">
+    tools:context=".worldmap.WorldMapActivity">
 
     <View
         android:id="@+id/balken"
@@ -15,7 +15,6 @@
         android:background="#ADD1EF"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"/>
-    />
 
     <TextView
         android:id="@+id/textView"

@@ -22,6 +22,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import com.example.mytravel.worldmap.WorldMapActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -124,7 +125,7 @@ public class HomeActivity extends AppCompatActivity {
         navRoot.findViewById(R.id.menu_worldmap)
                 .setOnClickListener(v -> {
                     navRoot.setVisibility(View.GONE);
-                    startActivity(new Intent(this, WorldMapActivity.class));
+                    startActivity(new Intent(this, com.example.mytravel.worldmap.WorldMapActivity.class));
                     finish();
                 });
 

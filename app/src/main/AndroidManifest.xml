@@ -26,7 +26,7 @@
         <activity android:name=".SettingsActivity" android:exported="false" />
         <activity android:name=".NewTripActivity" android:exported="false" />
         <activity android:name=".TripDetailsActivity" android:exported="false" />
-        <activity android:name=".WorldMapActivity" android:exported="false" />
+        <activity android:name=".worldmap.WorldMapActivity" android:exported="false" />
         <activity android:name=".CalendarActivity" android:exported="false" />
 
         <activity
