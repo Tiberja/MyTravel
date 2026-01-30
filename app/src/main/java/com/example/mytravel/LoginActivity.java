@@ -11,8 +11,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+// Activity für den Login bestehender Nutzer über Firebase Authentication
 public class LoginActivity extends AppCompatActivity {
 
+    // UI-Elemente für E-Mail, Passwort und Navigation
     EditText etEmail, etPassword;
     Button btnLogin;
     TextView tvRegister;
@@ -24,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // Initialisierung der UI-Elemente aus dem XML-Layout
         etEmail = findViewById(R.id.etEmail);
         etPassword = findViewById(R.id.etPassword);
         btnLogin = findViewById(R.id.btnLogin);

@@ -30,6 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import android.util.Log;
 
 public class CalendarActivity extends AppCompatActivity {
 
@@ -273,9 +274,22 @@ public class CalendarActivity extends AppCompatActivity {
                     Map<String, String> trips = new HashMap<>();
 
                     for (com.google.firebase.firestore.DocumentSnapshot doc : qs.getDocuments()) {
-                        com.google.firebase.Timestamp startTs = doc.getTimestamp("startdatum");
-                        com.google.firebase.Timestamp endTs = doc.getTimestamp("enddatum");
+                        Object rawStart = doc.get("startdatum");
+                        Object rawEnd = doc.get("enddatum");
                         String ort = doc.getString("ort");
+
+                        if (!(rawStart instanceof com.google.firebase.Timestamp)
+                                || !(rawEnd instanceof com.google.firebase.Timestamp)
+                                || ort == null) {
+
+                            Log.e("CAL_TRIP", "Falscher Datentyp in Reise: id=" + doc.getId()
+                                    + " startdatum=" + (rawStart == null ? "null" : rawStart.getClass().getName())
+                                    + " enddatum=" + (rawEnd == null ? "null" : rawEnd.getClass().getName()));
+                            continue;
+                        }
+
+                        com.google.firebase.Timestamp startTs = (com.google.firebase.Timestamp) rawStart;
+                        com.google.firebase.Timestamp endTs = (com.google.firebase.Timestamp) rawEnd;
 
                         if (startTs == null || endTs == null || ort == null) continue;
 

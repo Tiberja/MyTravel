@@ -77,7 +77,7 @@ public class SettingsActivity extends AppCompatActivity {
             finish();
         });
 
-        // ✅ DEINE SETTINGS-AKTIONEN (Logout + Passwort Reset)
+        //SETTINGS-AKTIONEN (Logout + Passwort Reset)
         LinearLayout rowLogout = findViewById(R.id.rowLogout);
         LinearLayout rowResetPassword = findViewById(R.id.rowResetPassword);
 
@@ -114,7 +114,7 @@ public class SettingsActivity extends AppCompatActivity {
                     );
         });
 
-        // Insets (WICHTIG: nur wenn es R.id.main wirklich im Settings-Layout gibt)
+        // Insets
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
