@@ -1,4 +1,4 @@
-package com.example.mytravel.calender;
+package com.example.mytravel.calendar;
 
 import android.content.Intent;
 import android.os.Bundle;

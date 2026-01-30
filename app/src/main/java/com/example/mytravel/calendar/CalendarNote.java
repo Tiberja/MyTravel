@@ -1,4 +1,4 @@
-package com.example.mytravel.calender;
+package com.example.mytravel.calendar;
 
 public class CalendarNote {
     public String date;   // "yyyy-MM-dd"

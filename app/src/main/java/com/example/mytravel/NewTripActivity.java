@@ -8,6 +8,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.firebase.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
@@ -83,6 +88,20 @@ public class NewTripActivity extends AppCompatActivity {
         String startdatum = etStartDate.getText().toString().trim();
         String enddatum = etEndDate.getText().toString().trim();
 
+        SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy", Locale.GERMANY);
+
+        Date startDateObj, endDateObj;
+        try {
+            startDateObj = sdf.parse(startdatum);
+            endDateObj = sdf.parse(enddatum);
+        } catch (Exception e) {
+            Toast.makeText(this, "Datum bitte im Format TT.MM.JJJJ (z.B. 03.02.2026)", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        Timestamp startTs = new Timestamp(startDateObj);
+        Timestamp endTs = new Timestamp(endDateObj);
+
         if (ort.isEmpty()) {
             etOrt.setError("Bitte Reiseziel eingeben");
             return;
@@ -110,8 +129,8 @@ public class NewTripActivity extends AppCompatActivity {
         // Firestore-Daten
         Map<String, Object> reise = new HashMap<>();
         reise.put("ort", ort);
-        reise.put("startdatum", startdatum);
-        reise.put("enddatum", enddatum);
+        reise.put("startdatum", startTs);
+        reise.put("enddatum", endTs);
 
         // Bild lokal (Uri als String)
         if (selectedImageUri != null) {

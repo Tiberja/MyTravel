@@ -16,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.devs.vectorchildfinder.VectorChildFinder;
 
-import com.example.mytravel.calender.CalendarActivity;
+import com.example.mytravel.calendar.CalendarActivity;
 import com.example.mytravel.HomeActivity;
 import com.example.mytravel.NewTripActivity;
 import com.example.mytravel.R;

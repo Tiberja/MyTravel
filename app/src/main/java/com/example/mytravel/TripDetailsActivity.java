@@ -115,7 +115,7 @@ public class TripDetailsActivity extends AppCompatActivity {
                     String ort = doc.getString("ort");
                     String bild = doc.getString("bild");
                     Timestamp start = doc.getTimestamp("startdatum");
-                    Timestamp ende = doc.getTimestamp("enddatum");
+                    Timestamp ende  = doc.getTimestamp("enddatum");
 
                     // Stadtname
                     if (ort != null && !ort.trim().isEmpty()) {
