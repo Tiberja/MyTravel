@@ -1,6 +1,7 @@
 package com.example.mytravel;
 
 import android.content.res.ColorStateList;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.CheckBox;
@@ -30,15 +31,12 @@ public class TripDetailsActivity extends AppCompatActivity {
     private static final String TAG = "TripDetailsActivity";
 
     private FirebaseFirestore db;
-    private String uid;
-    private String reiseId;
+    private String uid, reiseId;
 
     private ImageView imgCity, btnBack, btnAddPack, btnAddActivity, btnAddFoodspot;
     private TextView tvCity, tvTripDates;
 
-    private LinearLayout packlistContainer;
-    private LinearLayout activitiesContainer;
-    private LinearLayout foodspotsContainer;
+    private LinearLayout packlistContainer, activitiesContainer, foodspotsContainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +66,6 @@ public class TripDetailsActivity extends AppCompatActivity {
             finish();
             return;
         }
-
         uid = user.getUid();
 
         // Reise-ID prüfen
@@ -84,24 +81,24 @@ public class TripDetailsActivity extends AppCompatActivity {
         // Daten laden
         loadTrip();
         loadPacklist();
-        loadActivities();
-        loadFoodspots();
+        loadSimpleList("aktivitaeten", "titel", activitiesContainer, "Keine Aktivitäten gespeichert.");
+        loadSimpleList("foodspots", "name", foodspotsContainer, "Keine Foodspots gespeichert.");
 
         // + Buttons
         btnAddPack.setOnClickListener(v ->
-                showAddDialogSimple("Packliste hinzufügen", "z.B. Spiegel", this::addPackItem)
+                showTextDialog("Packliste hinzufügen", "z.B. Spiegel", "", this::addPackItem)
         );
 
         btnAddActivity.setOnClickListener(v ->
-                showAddDialogSimple("Aktivität hinzufügen", "z.B. Sagrada Familia", this::addActivity)
+                showTextDialog("Aktivität hinzufügen", "z.B. Sagrada Familia", "", this::addActivity)
         );
 
         btnAddFoodspot.setOnClickListener(v ->
-                showAddDialogSimple("Foodspot hinzufügen", "z.B. Honest Greens", this::addFoodspot)
+                showTextDialog("Foodspot hinzufügen", "z.B. Honest Greens", "", this::addFoodspot)
         );
     }
 
-    // Trip-Infos laden (Ort + Bild + Datum)
+    // TRIP INFOS
     private void loadTrip() {
         db.collection("benutzer").document(uid)
                 .collection("reisen").document(reiseId)
@@ -115,25 +112,18 @@ public class TripDetailsActivity extends AppCompatActivity {
                     String ort = doc.getString("ort");
                     String bild = doc.getString("bild");
                     Timestamp start = doc.getTimestamp("startdatum");
-                    Timestamp ende  = doc.getTimestamp("enddatum");
+                    Timestamp ende = doc.getTimestamp("enddatum");
 
-                    // Stadtname
-                    if (ort != null && !ort.trim().isEmpty()) {
-                        tvCity.setText(ort.toUpperCase(Locale.getDefault()));
-                    } else {
-                        tvCity.setText("CITY");
-                    }
+                    tvCity.setText((ort != null && !ort.trim().isEmpty())
+                            ? ort.toUpperCase(Locale.getDefault())
+                            : "CITY");
 
-                    // Datum anzeigen
+                    // gleiches Verhalten wie vorher (wenn null, dann "-")
                     String startStr = formatDate(start);
                     String endStr = formatDate(ende);
-                    if (start == null || ende == null) {
-                        tvTripDates.setText("");
-                    } else {
-                        tvTripDates.setText(startStr + " - " + endStr);
-                    }
+                    if (start == null || ende == null) tvTripDates.setText("");
+                    else tvTripDates.setText(startStr + " - " + endStr);
 
-                    // Bild setzen
                     setImageFromName(bild);
 
                     Log.d(TAG, "Trip: ort=" + ort + " start=" + startStr + " ende=" + endStr);
@@ -147,17 +137,25 @@ public class TripDetailsActivity extends AppCompatActivity {
     private void setImageFromName(String imageName) {
         if (imageName == null || imageName.trim().isEmpty()) return;
 
+        // URI aus Galerie/Files
+        if (imageName.startsWith("content://") || imageName.startsWith("file://")) {
+            try {
+                imgCity.setImageURI(Uri.parse(imageName));
+            } catch (Exception e) {
+                Log.w(TAG, "Bild-URI konnte nicht geladen werden: " + imageName, e);
+            }
+            return;
+        }
+
+        // drawable Name ("paris", "london"...)
         int resId = getResources().getIdentifier(
                 imageName.toLowerCase(Locale.getDefault()),
                 "drawable",
                 getPackageName()
         );
 
-        if (resId != 0) {
-            imgCity.setImageResource(resId);
-        } else {
-            Log.w(TAG, "Kein Drawable gefunden für: " + imageName);
-        }
+        if (resId != 0) imgCity.setImageResource(resId);
+        else Log.w(TAG, "Kein Drawable gefunden für: " + imageName);
     }
 
     private String formatDate(Timestamp ts) {
@@ -165,7 +163,8 @@ public class TripDetailsActivity extends AppCompatActivity {
         return new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(ts.toDate());
     }
 
-    //PACKLISTE
+
+    // PACKLISTE (Checkbox)
     private void loadPacklist() {
         packlistContainer.removeAllViews();
 
@@ -192,31 +191,33 @@ public class TripDetailsActivity extends AppCompatActivity {
                         cb.setButtonTintList(blackTint);
                         cb.setPadding(0, 6, 0, 6);
 
-                        // Haken speichern
                         cb.setOnCheckedChangeListener((buttonView, isChecked) ->
                                 d.getReference().update("checked", isChecked)
                                         .addOnFailureListener(e -> Log.e(TAG, "Packlist checked update fail", e))
                         );
 
-                        // Long-Press: Bearbeiten / Löschen
                         cb.setOnLongClickListener(v -> {
+                            String current = cb.getText().toString();
                             String[] options = {"✏️ Bearbeiten", "🗑️ Löschen"};
 
                             new AlertDialog.Builder(this)
                                     .setTitle("Packliste")
                                     .setItems(options, (dialog, which) -> {
                                         if (which == 0) {
-                                            showEditDialogSimple("Packliste bearbeiten", cb.getText().toString(),
+                                            showTextDialog(
+                                                    "Packliste bearbeiten",
+                                                    "",
+                                                    current,
                                                     newText -> d.getReference().update("name", newText)
-                                                            .addOnSuccessListener(x -> loadPacklist()));
+                                                            .addOnSuccessListener(x -> loadPacklist())
+                                            );
                                         } else {
-                                            showConfirmDeleteSimple("Löschen?", () ->
+                                            showConfirmDelete("Löschen?", () ->
                                                     d.getReference().delete().addOnSuccessListener(x -> loadPacklist())
                                             );
                                         }
                                     })
                                     .show();
-
                             return true;
                         });
 
@@ -245,43 +246,52 @@ public class TripDetailsActivity extends AppCompatActivity {
                 );
     }
 
-    // ACTIVITIES
-    private void loadActivities() {
-        activitiesContainer.removeAllViews();
+    // SIMPLE LISTS (Activities/Foodspots)
+    private void loadSimpleList(String collectionName, String fieldName,
+                                LinearLayout container, String emptyText) {
+        container.removeAllViews();
 
         db.collection("benutzer").document(uid)
                 .collection("reisen").document(reiseId)
-                .collection("aktivitaeten")
+                .collection(collectionName)
                 .get()
                 .addOnSuccessListener(q -> {
                     if (q.isEmpty()) {
-                        showEmptyText(activitiesContainer, "Keine Aktivitäten gespeichert.");
+                        showEmptyText(container, emptyText);
                         return;
                     }
 
                     for (QueryDocumentSnapshot d : q) {
-                        String titel = d.getString("titel");
+                        String value = d.getString(fieldName);
+                        String display = (value != null ? value : d.getId());
 
                         TextView tv = new TextView(this);
-                        tv.setText("• " + (titel != null ? titel : d.getId()));
+                        tv.setText("• " + display);
                         tv.setTextColor(getColor(android.R.color.black));
                         tv.setTextSize(16f);
                         tv.setPadding(0, 6, 0, 6);
 
                         tv.setOnLongClickListener(v -> {
-                            String current = (titel != null ? titel : "");
                             String[] options = {"✏️ Bearbeiten", "🗑️ Löschen"};
 
                             new AlertDialog.Builder(this)
-                                    .setTitle("Aktivität")
+                                    .setTitle(collectionName.equals("aktivitaeten") ? "Aktivität" : "Foodspot")
                                     .setItems(options, (dialog, which) -> {
                                         if (which == 0) {
-                                            showEditDialogSimple("Aktivität bearbeiten", current,
-                                                    newText -> d.getReference().update("titel", newText)
-                                                            .addOnSuccessListener(x -> loadActivities()));
+                                            showTextDialog(
+                                                    (collectionName.equals("aktivitaeten") ? "Aktivität bearbeiten" : "Foodspot bearbeiten"),
+                                                    "",
+                                                    display,
+                                                    newText -> d.getReference().update(fieldName, newText)
+                                                            .addOnSuccessListener(x ->
+                                                                    loadSimpleList(collectionName, fieldName, container, emptyText)
+                                                            )
+                                            );
                                         } else {
-                                            showConfirmDeleteSimple("Löschen?", () ->
-                                                    d.getReference().delete().addOnSuccessListener(x -> loadActivities())
+                                            showConfirmDelete("Löschen?", () ->
+                                                    d.getReference().delete().addOnSuccessListener(x ->
+                                                            loadSimpleList(collectionName, fieldName, container, emptyText)
+                                                    )
                                             );
                                         }
                                     })
@@ -290,12 +300,12 @@ public class TripDetailsActivity extends AppCompatActivity {
                             return true;
                         });
 
-                        activitiesContainer.addView(tv);
+                        container.addView(tv);
                     }
                 })
                 .addOnFailureListener(e -> {
-                    Log.e(TAG, "Activities laden fail", e);
-                    Toast.makeText(this, "Aktivitäten konnten nicht geladen werden.", Toast.LENGTH_LONG).show();
+                    Log.e(TAG, collectionName + " laden fail", e);
+                    Toast.makeText(this, "Konnte nicht geladen werden.", Toast.LENGTH_LONG).show();
                 });
     }
 
@@ -308,64 +318,12 @@ public class TripDetailsActivity extends AppCompatActivity {
                 .collection("reisen").document(reiseId)
                 .collection("aktivitaeten")
                 .add(m)
-                .addOnSuccessListener(r -> loadActivities())
+                .addOnSuccessListener(r ->
+                        loadSimpleList("aktivitaeten", "titel", activitiesContainer, "Keine Aktivitäten gespeichert.")
+                )
                 .addOnFailureListener(e ->
                         Toast.makeText(this, "Fehler: " + e.getMessage(), Toast.LENGTH_LONG).show()
                 );
-    }
-
-    //FOODSPOTS
-    private void loadFoodspots() {
-        foodspotsContainer.removeAllViews();
-
-        db.collection("benutzer").document(uid)
-                .collection("reisen").document(reiseId)
-                .collection("foodspots")
-                .get()
-                .addOnSuccessListener(q -> {
-                    if (q.isEmpty()) {
-                        showEmptyText(foodspotsContainer, "Keine Foodspots gespeichert.");
-                        return;
-                    }
-
-                    for (QueryDocumentSnapshot d : q) {
-                        String name = d.getString("name");
-
-                        TextView tv = new TextView(this);
-                        tv.setText("• " + (name != null ? name : d.getId()));
-                        tv.setTextColor(getColor(android.R.color.black));
-                        tv.setTextSize(16f);
-                        tv.setPadding(0, 6, 0, 6);
-
-                        tv.setOnLongClickListener(v -> {
-                            String current = (name != null ? name : "");
-                            String[] options = {"✏️ Bearbeiten", "🗑️ Löschen"};
-
-                            new AlertDialog.Builder(this)
-                                    .setTitle("Foodspot")
-                                    .setItems(options, (dialog, which) -> {
-                                        if (which == 0) {
-                                            showEditDialogSimple("Foodspot bearbeiten", current,
-                                                    newText -> d.getReference().update("name", newText)
-                                                            .addOnSuccessListener(x -> loadFoodspots()));
-                                        } else {
-                                            showConfirmDeleteSimple("Löschen?", () ->
-                                                    d.getReference().delete().addOnSuccessListener(x -> loadFoodspots())
-                                            );
-                                        }
-                                    })
-                                    .show();
-
-                            return true;
-                        });
-
-                        foodspotsContainer.addView(tv);
-                    }
-                })
-                .addOnFailureListener(e -> {
-                    Log.e(TAG, "Foodspots laden fail", e);
-                    Toast.makeText(this, "Foodspots konnten nicht geladen werden.", Toast.LENGTH_LONG).show();
-                });
     }
 
     private void addFoodspot(String name) {
@@ -377,13 +335,15 @@ public class TripDetailsActivity extends AppCompatActivity {
                 .collection("reisen").document(reiseId)
                 .collection("foodspots")
                 .add(m)
-                .addOnSuccessListener(r -> loadFoodspots())
+                .addOnSuccessListener(r ->
+                        loadSimpleList("foodspots", "name", foodspotsContainer, "Keine Foodspots gespeichert.")
+                )
                 .addOnFailureListener(e ->
                         Toast.makeText(this, "Fehler: " + e.getMessage(), Toast.LENGTH_LONG).show()
                 );
     }
 
-    // MINI-HELPER
+    // MINI HELPERS
     private void showEmptyText(LinearLayout container, String text) {
         TextView tv = new TextView(this);
         tv.setText(text);
@@ -391,18 +351,21 @@ public class TripDetailsActivity extends AppCompatActivity {
         container.addView(tv);
     }
 
-    // DIALOGS
     private interface OnTextSaved {
         void onSave(String text);
     }
 
-    private void showAddDialogSimple(String title, String hint, OnTextSaved onSave) {
+    private void showTextDialog(String title, String hint, String initial, OnTextSaved onSave) {
         LinearLayout root = new LinearLayout(this);
         root.setOrientation(LinearLayout.VERTICAL);
         root.setPadding(50, 40, 50, 20);
 
         EditText input = new EditText(this);
-        input.setHint(hint);
+        if (hint != null && !hint.isEmpty()) input.setHint(hint);
+        if (initial != null && !initial.isEmpty()) {
+            input.setText(initial);
+            input.setSelection(input.getText().length());
+        }
         input.setSingleLine(true);
         root.addView(input);
 
@@ -440,87 +403,15 @@ public class TripDetailsActivity extends AppCompatActivity {
         dialog.show();
     }
 
-    private void showEditDialogSimple(String title, String currentText, OnTextSaved onSave) {
-        LinearLayout root = new LinearLayout(this);
-        root.setOrientation(LinearLayout.VERTICAL);
-        root.setPadding(50, 40, 50, 20);
-
-        EditText input = new EditText(this);
-        input.setText(currentText);
-        input.setSelection(input.getText().length());
-        input.setSingleLine(true);
-        root.addView(input);
-
-        LinearLayout btnRow = new LinearLayout(this);
-        btnRow.setOrientation(LinearLayout.HORIZONTAL);
-        btnRow.setPadding(0, 30, 0, 0);
-
-        android.widget.Button btnCancel = new android.widget.Button(this);
-        btnCancel.setText("Abbrechen");
-
-        android.widget.Button btnSave = new android.widget.Button(this);
-        btnSave.setText("Speichern");
-
-        btnRow.addView(btnCancel);
-        btnRow.addView(btnSave);
-        root.addView(btnRow);
-
-        AlertDialog dialog = new AlertDialog.Builder(this)
+    private void showConfirmDelete(String title, Runnable onDelete) {
+        new AlertDialog.Builder(this)
                 .setTitle(title)
-                .setView(root)
-                .create();
-
-        btnCancel.setOnClickListener(v -> dialog.dismiss());
-
-        btnSave.setOnClickListener(v -> {
-            String text = input.getText().toString().trim();
-            if (text.isEmpty()) {
-                Toast.makeText(this, "Bitte etwas eingeben.", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            dialog.dismiss();
-            onSave.onSave(text);
-        });
-
-        dialog.show();
-    }
-
-    private void showConfirmDeleteSimple(String title, Runnable onDelete) {
-        LinearLayout root = new LinearLayout(this);
-        root.setOrientation(LinearLayout.VERTICAL);
-        root.setPadding(50, 40, 50, 20);
-
-        TextView tv = new TextView(this);
-        tv.setText("Willst du das wirklich löschen?");
-        tv.setTextSize(16f);
-        root.addView(tv);
-
-        LinearLayout btnRow = new LinearLayout(this);
-        btnRow.setOrientation(LinearLayout.HORIZONTAL);
-        btnRow.setPadding(0, 30, 0, 0);
-
-        android.widget.Button btnCancel = new android.widget.Button(this);
-        btnCancel.setText("Abbrechen");
-
-        android.widget.Button btnDelete = new android.widget.Button(this);
-        btnDelete.setText("Löschen");
-
-        btnRow.addView(btnCancel);
-        btnRow.addView(btnDelete);
-        root.addView(btnRow);
-
-        AlertDialog dialog = new AlertDialog.Builder(this)
-                .setTitle(title)
-                .setView(root)
-                .create();
-
-        btnCancel.setOnClickListener(v -> dialog.dismiss());
-
-        btnDelete.setOnClickListener(v -> {
-            dialog.dismiss();
-            onDelete.run();
-        });
-
-        dialog.show();
+                .setMessage("Willst du das wirklich löschen?")
+                .setNegativeButton("Abbrechen", (d, w) -> d.dismiss())
+                .setPositiveButton("Löschen", (d, w) -> {
+                    d.dismiss();
+                    onDelete.run();
+                })
+                .show();
     }
 }
