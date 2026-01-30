@@ -1,4 +1,4 @@
-package com.example.mytravel;
+package com.example.mytravel.calender;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -18,7 +18,10 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.mytravel.worldmap.WorldMapActivity;
+import com.example.mytravel.HomeActivity;
+import com.example.mytravel.NewTripActivity;
+import com.example.mytravel.R;
+import com.example.mytravel.SettingsActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Source;
