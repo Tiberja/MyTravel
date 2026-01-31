@@ -29,12 +29,6 @@
         <activity android:name=".worldmap.WorldMapActivity" android:exported="false" />
         <activity android:name=".calendar.CalendarActivity" android:exported="false" />
 
-        <activity
-            android:name=".MainActivity"
-            android:exported="false"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.MyTravel" />
-
     </application>
 
 </manifest>

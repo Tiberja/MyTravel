@@ -61,12 +61,12 @@ public class CountryAdapter extends RecyclerView.Adapter<CountryAdapter.VH> {
         return countries.size();
     }
 
-    // Liste neu zeichnen
+    //Liste neu zeichnen
     public void refresh() {
         notifyDataSetChanged();
     }
 
-    // 🔹 ViewHolder
+    // ViewHolder
     static class VH extends RecyclerView.ViewHolder {
 
         ImageView flag;

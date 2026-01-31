@@ -28,9 +28,7 @@ public class NewTripActivity extends AppCompatActivity {
     private EditText etOrt, etStartDate, etEndDate;
     private ImageView ivPreview;
     private Uri selectedImageUri = null;
-
     private FirebaseFirestore db;
-
     private ActivityResultLauncher<String[]> pickImageLauncher;
 
     @Override
