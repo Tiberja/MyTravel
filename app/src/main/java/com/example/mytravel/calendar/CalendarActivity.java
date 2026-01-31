@@ -46,6 +46,7 @@ public class CalendarActivity extends AppCompatActivity {
 
     private FirebaseFirestore db;
     private String uid;
+    private final Map<String, String> noteByDate = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -180,6 +181,9 @@ public class CalendarActivity extends AppCompatActivity {
         View navRoot = findViewById(R.id.nav_include);
         if (navRoot != null) navRoot.setVisibility(View.GONE);
 
+        // vorhandene Notiz (falls vorhanden)
+        String existingNote = noteByDate.get(dateKey);
+
         LinearLayout root = new LinearLayout(this);
         root.setOrientation(LinearLayout.VERTICAL);
         root.setPadding(50, 40, 50, 20);
@@ -188,6 +192,14 @@ public class CalendarActivity extends AppCompatActivity {
         input.setHint("Notiz eingeben");
         input.setSingleLine(false);
         input.setMaxLines(3);
+
+        // Text setzen (wenn vorhanden)
+        if (existingNote != null && !existingNote.trim().isEmpty()) {
+            input.setText(existingNote);
+            input.setSelection(input.getText().length());
+            input.setEnabled(false); // erstmal gesperrt
+        }
+
         root.addView(input);
 
         LinearLayout btnRow = new LinearLayout(this);
@@ -198,11 +210,19 @@ public class CalendarActivity extends AppCompatActivity {
         android.widget.Button btnCancel = new android.widget.Button(this);
         btnCancel.setText("Abbrechen");
 
+        android.widget.Button btnEdit = new android.widget.Button(this);
+        btnEdit.setText("Bearbeiten");
+
         android.widget.Button btnSave = new android.widget.Button(this);
         btnSave.setText("Speichern");
 
+        // Buttons hinzufügen
         btnRow.addView(btnCancel);
+        if (existingNote != null && !existingNote.trim().isEmpty()) {
+            btnRow.addView(btnEdit);
+        }
         btnRow.addView(btnSave);
+
         root.addView(btnRow);
 
         AlertDialog dialog = new AlertDialog.Builder(this)
@@ -211,6 +231,12 @@ public class CalendarActivity extends AppCompatActivity {
                 .create();
 
         btnCancel.setOnClickListener(v -> dialog.dismiss());
+
+        // Bearbeiten: EditText freischalten
+        btnEdit.setOnClickListener(v -> {
+            input.setEnabled(true);
+            input.requestFocus();
+        });
 
         btnSave.setOnClickListener(v -> {
             String text = input.getText().toString().trim();
@@ -252,11 +278,14 @@ public class CalendarActivity extends AppCompatActivity {
                 .get(Source.SERVER)
                 .addOnSuccessListener(qs -> {
                     Map<String, String> notes = new HashMap<>();
+                    noteByDate.clear();
 
                     qs.getDocuments().forEach(doc -> {
                         CalendarNote note = doc.toObject(CalendarNote.class);
                         if (note != null && note.date != null && note.date.startsWith(monthPrefix)) {
-                            notes.put(note.date, note.note == null ? "" : note.note);
+                            String text = note.note == null ? "" : note.note;
+                            notes.put(note.date, text);
+                            noteByDate.put(note.date, text);
                         }
                     });
 
