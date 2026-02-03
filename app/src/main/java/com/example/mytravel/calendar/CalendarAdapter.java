@@ -58,7 +58,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.VH> {
     @Override
     public void onBindViewHolder(@NonNull VH h, int position) {
         String date = cells.get(position);
-
+        //Leeres Feld (Platzhalter)
         if (date.isEmpty()) {
             h.tvDayNumber.setText("");
             h.tvTripName.setText("");
@@ -72,17 +72,17 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.VH> {
 
         h.itemView.setAlpha(1f);
 
-        // Tag aus "yyyy-MM-dd" holen
+        // 1) Tag aus "yyyy-MM-dd" holen
         String[] parts = date.split("-");
         String day = parts[2];
         if (day.startsWith("0")) day = day.substring(1);
         h.tvDayNumber.setText(day);
 
-        // Notiz
+        // 2) Notiz-Vorschau anzeigen (wenn vorhanden)
         String note = noteByDate.get(date);
         h.tvNotePreview.setText(note == null ? "" : note);
 
-        // Reise anzeigen + markieren
+        // 3) Reise anzeigen + markieren
         String trip = tripByDate.get(date);
         if (trip != null && !trip.isEmpty()) {
             h.tvTripName.setText(trip);
@@ -93,7 +93,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.VH> {
             h.tvTripName.setVisibility(View.GONE);
             h.itemView.setBackgroundColor(0xFFFFFFFF); // weiß
         }
-
+       // 4) Klick auf Tag -> an Activity weitergeben
         h.itemView.setOnClickListener(v -> listener.onDayClick(date));
     }
 
@@ -101,7 +101,7 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.VH> {
     public int getItemCount() {
         return cells.size();
     }
-
+    // Speichert die Views eines Feldes, damit RecyclerView schnell zugreifen kann
     static class VH extends RecyclerView.ViewHolder {
         TextView tvDayNumber, tvTripName, tvNotePreview;
 

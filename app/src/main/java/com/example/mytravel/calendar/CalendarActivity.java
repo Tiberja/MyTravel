@@ -48,6 +48,7 @@ public class CalendarActivity extends AppCompatActivity {
     private String uid;
     private final Map<String, String> noteByDate = new HashMap<>();
 
+    //Start der Activity: Views verbinden, Adapter setzen, Klicks, ersten Monat rendern
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,9 +65,11 @@ public class CalendarActivity extends AppCompatActivity {
 
         calendar = Calendar.getInstance();
 
+// Klick auf Tag -> openAddNoteDialog(date)
         adapter = new CalendarAdapter(this::openAddNoteDialog);
         rvCalendar.setAdapter(adapter);
 
+// Monat wechseln
         btnPrev.setOnClickListener(v -> {
             calendar.add(Calendar.MONTH, -1);
             renderMonth();
@@ -82,7 +85,7 @@ public class CalendarActivity extends AppCompatActivity {
 
         renderMonth();
     }
-
+//Navigation
     private void setupNavigationOverlay() {
         ImageView navBtn = findViewById(R.id.navigation_btn);
         View navRoot = findViewById(R.id.nav_include);
@@ -140,7 +143,7 @@ public class CalendarActivity extends AppCompatActivity {
             return insets;
         });
     }
-
+// 42 Zellen werden erstellt & an Adapter gegeben
     private void renderMonth() {
         SimpleDateFormat headerFormat = new SimpleDateFormat("MMMM yyyy", Locale.GERMAN);
         tvMonth.setText(headerFormat.format(calendar.getTime()));
@@ -201,7 +204,7 @@ public class CalendarActivity extends AppCompatActivity {
         }
 
         root.addView(input);
-
+        // Button
         LinearLayout btnRow = new LinearLayout(this);
         btnRow.setOrientation(LinearLayout.HORIZONTAL);
         btnRow.setPadding(0, 30, 0, 0);
@@ -216,7 +219,7 @@ public class CalendarActivity extends AppCompatActivity {
         android.widget.Button btnSave = new android.widget.Button(this);
         btnSave.setText("Speichern");
 
-        // Buttons hinzufügen
+        // Bearbeiten wird nur gezeigt, wenn es schon eine Notiz gibt
         btnRow.addView(btnCancel);
         if (existingNote != null && !existingNote.trim().isEmpty()) {
             btnRow.addView(btnEdit);
@@ -309,7 +312,7 @@ public class CalendarActivity extends AppCompatActivity {
                         Object rawStart = doc.get("startdatum");
                         Object rawEnd = doc.get("enddatum");
                         String ort = doc.getString("ort");
-
+                        //Sicherheitscheck
                         if (!(rawStart instanceof com.google.firebase.Timestamp)
                                 || !(rawEnd instanceof com.google.firebase.Timestamp)
                                 || ort == null) {

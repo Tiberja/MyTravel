@@ -99,7 +99,7 @@ public class SettingsActivity extends AppCompatActivity {
                         Toast.LENGTH_LONG).show();
                 return;
             }
-
+            // Reset-Mail schicken
             FirebaseAuth.getInstance()
                     .sendPasswordResetEmail(user.getEmail())
                     .addOnSuccessListener(aVoid ->

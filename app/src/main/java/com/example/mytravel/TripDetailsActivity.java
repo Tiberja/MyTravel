@@ -75,10 +75,10 @@ public class TripDetailsActivity extends AppCompatActivity {
             finish();
             return;
         }
-
+        // Firestore initialisieren
         db = FirebaseFirestore.getInstance();
 
-        // Daten laden
+        // Daten laden: Öffnen Dialoge zum Hinzufügen
         loadTrip();
         loadPacklist();
         loadSimpleList("aktivitaeten", "titel", activitiesContainer, "Keine Aktivitäten gespeichert.");
@@ -98,7 +98,7 @@ public class TripDetailsActivity extends AppCompatActivity {
         );
     }
 
-    // TRIP INFOS
+    // Lädt Basisinformationen der Reise (Ort, Bild, Datum)
     private void loadTrip() {
         db.collection("benutzer").document(uid)
                 .collection("reisen").document(reiseId)
@@ -109,6 +109,7 @@ public class TripDetailsActivity extends AppCompatActivity {
                         return;
                     }
 
+                    // Ort, Bild und Zeitraum aus Firestore lesen
                     String ort = doc.getString("ort");
                     String bild = doc.getString("bild");
                     Timestamp start = doc.getTimestamp("startdatum");
@@ -118,7 +119,7 @@ public class TripDetailsActivity extends AppCompatActivity {
                             ? ort.toUpperCase(Locale.getDefault())
                             : "CITY");
 
-                    // gleiches Verhalten wie vorher (wenn null, dann "-")
+                    // Datum formatieren
                     String startStr = formatDate(start);
                     String endStr = formatDate(ende);
                     if (start == null || ende == null) tvTripDates.setText("");
@@ -133,7 +134,7 @@ public class TripDetailsActivity extends AppCompatActivity {
                     Toast.makeText(this, "Fehler Trip: " + e.getMessage(), Toast.LENGTH_LONG).show();
                 });
     }
-
+    // Setzt das Bild der Reise
     private void setImageFromName(String imageName) {
         if (imageName == null || imageName.trim().isEmpty()) return;
 
@@ -157,7 +158,7 @@ public class TripDetailsActivity extends AppCompatActivity {
         if (resId != 0) imgCity.setImageResource(resId);
         else Log.w(TAG, "Kein Drawable gefunden für: " + imageName);
     }
-
+    // Wandelt Firestore Timestamp in lesbares Datum um
     private String formatDate(Timestamp ts) {
         if (ts == null) return "-";
         return new SimpleDateFormat("dd.MM.yyyy", Locale.getDefault()).format(ts.toDate());
@@ -168,6 +169,7 @@ public class TripDetailsActivity extends AppCompatActivity {
     private void loadPacklist() {
         packlistContainer.removeAllViews();
 
+        // Packliste aus Firestore laden
         db.collection("benutzer").document(uid)
                 .collection("reisen").document(reiseId)
                 .collection("packliste")
@@ -179,7 +181,7 @@ public class TripDetailsActivity extends AppCompatActivity {
                     }
 
                     ColorStateList blackTint = ColorStateList.valueOf(getColor(android.R.color.black));
-
+                    // Für jedes Dokument eine Checkbox erstellen
                     for (QueryDocumentSnapshot d : q) {
                         String name = d.getString("name");
                         boolean checked = Boolean.TRUE.equals(d.getBoolean("checked"));
@@ -190,12 +192,12 @@ public class TripDetailsActivity extends AppCompatActivity {
                         cb.setTextColor(getColor(android.R.color.black));
                         cb.setButtonTintList(blackTint);
                         cb.setPadding(0, 6, 0, 6);
-
+                        // Haken ändern -> Firestore aktualisieren
                         cb.setOnCheckedChangeListener((buttonView, isChecked) ->
                                 d.getReference().update("checked", isChecked)
                                         .addOnFailureListener(e -> Log.e(TAG, "Packlist checked update fail", e))
                         );
-
+                        // LongClick: Bearbeiten oder Löschen
                         cb.setOnLongClickListener(v -> {
                             String current = cb.getText().toString();
                             String[] options = {"✏️ Bearbeiten", "🗑️ Löschen"};
@@ -229,7 +231,7 @@ public class TripDetailsActivity extends AppCompatActivity {
                     Toast.makeText(this, "Packliste konnte nicht geladen werden.", Toast.LENGTH_LONG).show();
                 });
     }
-
+    // Fügt neuen Eintrag zur Packliste hinzu
     private void addPackItem(String name) {
         Map<String, Object> m = new HashMap<>();
         m.put("name", name);
@@ -250,7 +252,7 @@ public class TripDetailsActivity extends AppCompatActivity {
     private void loadSimpleList(String collectionName, String fieldName,
                                 LinearLayout container, String emptyText) {
         container.removeAllViews();
-
+        // Firestore Collection laden (aktivitaeten / foodspots)
         db.collection("benutzer").document(uid)
                 .collection("reisen").document(reiseId)
                 .collection(collectionName)
@@ -260,17 +262,17 @@ public class TripDetailsActivity extends AppCompatActivity {
                         showEmptyText(container, emptyText);
                         return;
                     }
-
+                    // Für jedes Dokument in der Collection ein Listenelement anzeigen
                     for (QueryDocumentSnapshot d : q) {
                         String value = d.getString(fieldName);
                         String display = (value != null ? value : d.getId());
-
+                        // TextView pro Eintrag erstellen (Anzeige im UI)
                         TextView tv = new TextView(this);
                         tv.setText("• " + display);
                         tv.setTextColor(getColor(android.R.color.black));
                         tv.setTextSize(16f);
                         tv.setPadding(0, 6, 0, 6);
-
+                        // LongClick: Bearbeiten oder Löschen
                         tv.setOnLongClickListener(v -> {
                             String[] options = {"✏️ Bearbeiten", "🗑️ Löschen"};
 
@@ -279,7 +281,9 @@ public class TripDetailsActivity extends AppCompatActivity {
                                     .setItems(options, (dialog, which) -> {
                                         if (which == 0) {
                                             showTextDialog(
-                                                    (collectionName.equals("aktivitaeten") ? "Aktivität bearbeiten" : "Foodspot bearbeiten"),
+                                                    (collectionName.equals("aktivitaeten")
+                                                            ? "Aktivität bearbeiten"
+                                                            : "Foodspot bearbeiten"),
                                                     "",
                                                     display,
                                                     newText -> d.getReference().update(fieldName, newText)
@@ -308,7 +312,7 @@ public class TripDetailsActivity extends AppCompatActivity {
                     Toast.makeText(this, "Konnte nicht geladen werden.", Toast.LENGTH_LONG).show();
                 });
     }
-
+    // Fügt neue Aktivität zur Reise hinzu
     private void addActivity(String titel) {
         Map<String, Object> m = new HashMap<>();
         m.put("titel", titel);
@@ -325,7 +329,7 @@ public class TripDetailsActivity extends AppCompatActivity {
                         Toast.makeText(this, "Fehler: " + e.getMessage(), Toast.LENGTH_LONG).show()
                 );
     }
-
+    // Fügt neuen Foodspot zur Reise hinzu
     private void addFoodspot(String name) {
         Map<String, Object> m = new HashMap<>();
         m.put("name", name);
@@ -343,7 +347,7 @@ public class TripDetailsActivity extends AppCompatActivity {
                 );
     }
 
-    // MINI HELPERS
+    // Zeigt Hinweistext, wenn Liste leer ist
     private void showEmptyText(LinearLayout container, String text) {
         TextView tv = new TextView(this);
         tv.setText(text);
@@ -354,7 +358,7 @@ public class TripDetailsActivity extends AppCompatActivity {
     private interface OnTextSaved {
         void onSave(String text);
     }
-
+    // Wiederverwendbarer Dialog zum Hinzufügen/Bearbeiten von Text
     private void showTextDialog(String title, String hint, String initial, OnTextSaved onSave) {
         LinearLayout root = new LinearLayout(this);
         root.setOrientation(LinearLayout.VERTICAL);
@@ -368,7 +372,7 @@ public class TripDetailsActivity extends AppCompatActivity {
         }
         input.setSingleLine(true);
         root.addView(input);
-
+        // Button-Zeile (Abbrechen / Speichern)
         LinearLayout btnRow = new LinearLayout(this);
         btnRow.setOrientation(LinearLayout.HORIZONTAL);
         btnRow.setPadding(0, 30, 0, 0);
@@ -382,14 +386,14 @@ public class TripDetailsActivity extends AppCompatActivity {
         btnRow.addView(btnCancel);
         btnRow.addView(btnSave);
         root.addView(btnRow);
-
+        // Dialog erstellen und Layout setzen
         AlertDialog dialog = new AlertDialog.Builder(this)
                 .setTitle(title)
                 .setView(root)
                 .create();
 
         btnCancel.setOnClickListener(v -> dialog.dismiss());
-
+        // Leere Eingabe verhindern
         btnSave.setOnClickListener(v -> {
             String text = input.getText().toString().trim();
             if (text.isEmpty()) {
@@ -402,7 +406,7 @@ public class TripDetailsActivity extends AppCompatActivity {
 
         dialog.show();
     }
-
+    // Bestätigungsdialog vor dem Löschen
     private void showConfirmDelete(String title, Runnable onDelete) {
         new AlertDialog.Builder(this)
                 .setTitle(title)
