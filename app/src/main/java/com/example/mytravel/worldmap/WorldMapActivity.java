@@ -40,38 +40,40 @@ public class WorldMapActivity extends AppCompatActivity {
     private CountryAdapter adapter;
     private List<Country> countries;
 
-    // State
+    // State -> IDs besuchter Länder
     private final Set<String> visited = new HashSet<>();
 
     // Firebase
     private FirebaseFirestore db;
     private FirebaseUser user;
 
-    // Vector helper
+    // Vector helper -> findet Pfade im Vector über android:name
     private VectorChildFinder vectorFinder;
 
     // Farben
     private static final int COLOR_VISITED = 0xFFADD1EF;
     private static final int COLOR_DEFAULT = 0xFFECECEC;
 
+    //Einstiegspunkt
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_world_map);
 
-
+        //Views verbinden
         mapImage = findViewById(R.id.imageView);
         counterTv = findViewById(R.id.textView);
 
 
-        // world.xml ist direkt im ImageView
+        //VectorFinder -> arbeitet mit dem VectorDrawable "world" im ImageView
         vectorFinder = new VectorChildFinder(this, R.drawable.world, mapImage);
 
-
+        //RecyclerView initialisieren
         RecyclerView rv = findViewById(R.id.countryList);
         rv.setLayoutManager(new LinearLayoutManager(this));
 
+        //Länder
         countries = Arrays.asList(
                 new Country("egypt", "Ägypten", R.drawable.aegypten_flagge),
                 new Country("brazil", "Brasilien", R.drawable.brasilien_flagge),
@@ -95,15 +97,17 @@ public class WorldMapActivity extends AppCompatActivity {
                 new Country("usa", "USA", R.drawable.usa_flagge)
         );
 
+        //Adapter -> zeigt Liste + meldet Klicks an onCountryClicked
         adapter = new CountryAdapter(countries, visited, this::onCountryClicked);
         rv.setAdapter(adapter);
 
         updateCounter();
 
-        //Firebase
+        //Firebase initialisieren
         db = FirebaseFirestore.getInstance();
         user = FirebaseAuth.getInstance().getCurrentUser();
 
+        //Besuchte Länder laden (wenn eingeloggt)
         if (user != null) {
             loadVisitedFromFirestore(user.getUid());
         }
@@ -150,7 +154,7 @@ public class WorldMapActivity extends AppCompatActivity {
                 navRoot.setVisibility(View.GONE)
         );
 
-        //Insets
+        //Insets/Padding für Edge-to-Edge setzen
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -158,7 +162,7 @@ public class WorldMapActivity extends AppCompatActivity {
         });
     }
 
-    // Klick auf Land in der Liste
+    //Klick auf Land in der Liste
     private void onCountryClicked(Country c) {
         boolean nowVisited;
 
@@ -170,6 +174,7 @@ public class WorldMapActivity extends AppCompatActivity {
             nowVisited = true;
         }
 
+        //Land im Vector einfärben
         Object p = vectorFinder.findPathByName(c.id);
         if (p != null) {
             try {
@@ -183,16 +188,17 @@ public class WorldMapActivity extends AppCompatActivity {
         }
 
 
+        //UI aktualisieren
         adapter.refresh();
         updateCounter();
 
+        //Firestore speichern/löschen
         if (user != null) {
             saveVisitedToFirestore(user.getUid(), c.id, nowVisited);
         }
     }
 
-
-    // Firebase -> Laden
+    //Firebase -> Laden
     private void loadVisitedFromFirestore(String uid) {
         db.collection("benutzer")
                 .document(uid)
@@ -224,7 +230,7 @@ public class WorldMapActivity extends AppCompatActivity {
                 });
     }
 
-    // Firebase -> Speichern/Löschen
+    //Firebase -> Speichern/Löschen
     private void saveVisitedToFirestore(String uid, String countryId, boolean isVisited) {
         com.google.firebase.firestore.DocumentReference ref = db.collection("benutzer")
                 .document(uid)
@@ -242,7 +248,7 @@ public class WorldMapActivity extends AppCompatActivity {
         }
     }
 
-    // Zähler
+    //Zähler
     private void updateCounter() {
         int count = 0;
         for (Country c : countries) {

@@ -43,7 +43,7 @@ public class HomeActivity extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_home);
 
-        // auth check
+        //auth check
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user == null) {
             Toast.makeText(this, "Nicht eingeloggt", Toast.LENGTH_SHORT).show();
@@ -52,12 +52,15 @@ public class HomeActivity extends AppCompatActivity {
             return;
         }
 
+        //Views aus xml holen
         LinearLayout tripsContainer = findViewById(R.id.tripsContainer);
         EditText search = findViewById(R.id.suchen);
 
+        //Firestore initialisieren
         db = FirebaseFirestore.getInstance();
         uid = user.getUid();
 
+        //Liste für alle Reisen
         List<DocumentSnapshot> allTrips = new ArrayList<>();
 
         // Firestore laden
@@ -73,11 +76,10 @@ public class HomeActivity extends AppCompatActivity {
                     allTrips.clear();
                     allTrips.addAll(snap.getDocuments());
 
-                    // WICHTIG: aktuellen Suchtext berücksichtigen
                     renderTrips(tripsContainer, allTrips, search.getText().toString());
                 });
 
-        // Suchleiste
+        //Suchleiste
         search.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override public void afterTextChanged(Editable s) {}
@@ -88,7 +90,7 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
 
-        // Navigation
+        //Navigation
         ImageView btn = findViewById(R.id.navigation_btn);
 
         View navRoot = findViewById(R.id.nav_include);
@@ -133,7 +135,7 @@ public class HomeActivity extends AppCompatActivity {
                     finish();
                 });
 
-        // insets
+        //insets/padding -> Abstände
         View main = findViewById(R.id.main);
         if (main != null) {
             ViewCompat.setOnApplyWindowInsetsListener(main, (v, insets) -> {
@@ -144,7 +146,7 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
-    // Reisen anzeigen
+    //Reisen anzeigen -> cards
     private void renderTrips(LinearLayout container, List<DocumentSnapshot> docs, String query) {
         container.removeAllViews();
 
@@ -160,6 +162,7 @@ public class HomeActivity extends AppCompatActivity {
             boolean match = q.isEmpty() || ortLower.startsWith(q);
             if (!match) continue;
 
+            //cardView erstellen
             CardView card = new CardView(this);
 
             int topMargin = container.getChildCount() == 0 ? dp(20) : dp(30);
@@ -175,6 +178,7 @@ public class HomeActivity extends AppCompatActivity {
             card.setCardElevation(dp(10));
             card.setUseCompatPadding(false);
 
+            //FrameLayout für Text und Bild
             android.widget.FrameLayout frame = new android.widget.FrameLayout(this);
 
             ImageView img = new ImageView(this);
@@ -217,14 +221,14 @@ public class HomeActivity extends AppCompatActivity {
             frame.addView(title);
             card.addView(frame);
 
-            // normaler Klick -> Details
+            //normaler Klick -> Details
             card.setOnClickListener(v -> {
                 Intent i = new Intent(this, TripDetailsActivity.class);
                 i.putExtra("reiseId", id);
                 startActivity(i);
             });
 
-            // langer Klick -> löschen
+            //langer Klick -> löschen
             card.setOnLongClickListener(v -> {
                 new AlertDialog.Builder(this)
                         .setTitle("Reise löschen")
@@ -251,6 +255,7 @@ public class HomeActivity extends AppCompatActivity {
         }
     }
 
+    //Hilfsmethode -> dp → Pixel umrechnen damit auf allen Geräten gleich
     private int dp(int v) {
         return (int) (v * getResources().getDisplayMetrics().density);
     }

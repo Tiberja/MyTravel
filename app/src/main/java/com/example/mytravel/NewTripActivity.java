@@ -25,10 +25,17 @@ import java.util.Map;
 
 public class NewTripActivity extends AppCompatActivity {
 
+    //UI-Elemente
     private EditText etOrt, etStartDate, etEndDate;
     private ImageView ivPreview;
+
+    //Bild
     private Uri selectedImageUri = null;
+
+    //Firestore
     private FirebaseFirestore db;
+
+    //Launcher für Bildauswahl
     private ActivityResultLauncher<String[]> pickImageLauncher;
 
     @Override
@@ -36,10 +43,10 @@ public class NewTripActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_trip);
 
-        // Firebase
+        //Firebase
         db = FirebaseFirestore.getInstance();
 
-        // Views
+        //Views
         etOrt = findViewById(R.id.destination);
         etStartDate = findViewById(R.id.start_date);
         etEndDate = findViewById(R.id.end_date);
@@ -49,38 +56,39 @@ public class NewTripActivity extends AppCompatActivity {
         Button btnFertig = findViewById(R.id.btn_fertig);
 
 
-        // Bild aus Galerie wählen
+        //Bild aus Galerie wählen
         pickImageLauncher = registerForActivityResult(
                 new ActivityResultContracts.OpenDocument(),
                 uri -> {
                     if (uri != null) {
-                        getContentResolver().takePersistableUriPermission(
+                        getContentResolver().takePersistableUriPermission(      //Dauerhafte Leseberechtigung für diese Datei
                                 uri,
                                 Intent.FLAG_GRANT_READ_URI_PERMISSION
                         );
 
-                        selectedImageUri = uri;
-                        ivPreview.setImageURI(uri);
+                        selectedImageUri = uri;         //Uri speichern
+                        ivPreview.setImageURI(uri);     //Bild anzeigen
                     }
                 }
         );
 
+        //Klick auf Bild hochladen
         findViewById(R.id.bildHochladen).setOnClickListener(v -> {
-            pickImageLauncher.launch(new String[]{"image/*"});
+            pickImageLauncher.launch(new String[]{"image/*"});       //öffnet Dateiauswahl
         });
 
 
 
-        // Abbrechen -> Home
-
+        //Abbrechen -> Home
         btnAbbrechen.setOnClickListener(v -> goHome());
 
 
-        // Fertig -> Speichern
-
+        //Fertig -> Speichern
         btnFertig.setOnClickListener(v -> saveTrip());
     }
 
+    //liest und prüft Eingabe
+    //specihert Reise in Firestore
     private void saveTrip() {
         String ort = etOrt.getText().toString().trim();
         String startdatum = etStartDate.getText().toString().trim();
@@ -115,6 +123,7 @@ public class NewTripActivity extends AppCompatActivity {
             return;
         }
 
+        //aktuellen User holen
         String uid = FirebaseAuth.getInstance().getCurrentUser() != null
                 ? FirebaseAuth.getInstance().getCurrentUser().getUid()
                 : null;
@@ -124,7 +133,7 @@ public class NewTripActivity extends AppCompatActivity {
             return;
         }
 
-        // Firestore Daten
+        //Firestore Daten
         Map<String, Object> reise = new HashMap<>();
         reise.put("ort", ort);
         reise.put("startdatum", startTs);
@@ -136,7 +145,7 @@ public class NewTripActivity extends AppCompatActivity {
             reise.put("bild", null);
         }
 
-        // users/{uid}/reisen/{autoId}
+        //in Firestore speichern
         db.collection("benutzer")
                 .document(uid)
                 .collection("reisen")
@@ -150,6 +159,7 @@ public class NewTripActivity extends AppCompatActivity {
                 );
     }
 
+    //zurück zu HomeActivity
     private void goHome() {
         Intent intent = new Intent(this, HomeActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
