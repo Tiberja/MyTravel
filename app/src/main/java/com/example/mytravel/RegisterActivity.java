@@ -33,7 +33,7 @@ public class RegisterActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
 
-        // zurück zum Login
+        // schließt die RegisterActivity (Login liegt darunter)
         tvGoLogin.setOnClickListener(v -> finish());
 
         btnRegister.setOnClickListener(v -> {

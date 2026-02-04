@@ -29,25 +29,25 @@ public class CalendarAdapter extends RecyclerView.Adapter<CalendarAdapter.VH> {
     public CalendarAdapter(OnDayClickListener listener) {
         this.listener = listener;
     }
-
+    // Setzt / aktualisiert die Kalender-Zellen (z. B. Tage des Monats)
     public void setCells(List<String> newCells) {
         cells.clear();
         cells.addAll(newCells);
         notifyDataSetChanged();
     }
-
+    // Setzt / aktualisiert die Notizen pro Datum
     public void setNotes(Map<String, String> notes) {
         noteByDate.clear();
         noteByDate.putAll(notes);
         notifyDataSetChanged();
     }
-
+    // Setzt / aktualisiert Reisen pro Datum
     public void setTrips(Map<String, String> trips) {
         tripByDate.clear();
         tripByDate.putAll(trips);
         notifyDataSetChanged();
     }
-
+    // Wird vom RecyclerView aufgerufen, um einen neuen ViewHolder zu erstellen
     @NonNull
     @Override
     public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
